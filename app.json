@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "BIBLIA",
+    "slug": "moralesddios-bible",
+    "userInterfaceStyle": "automatic",
+    "sdkVersion": "38.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1c7ce0"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "moralesddios.bible",
+      "buildNumber": "1.2.0",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "moralesddios.bible",
+      "versionCode": 120,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1c7ce0"
+      }
+    }
+  }
+}
