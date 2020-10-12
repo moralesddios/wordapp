@@ -66,7 +66,7 @@ function Header({ scene, previous, navigation, setModalVisible }) {
   return (
     <React.Fragment>
       <StatusBar style="light" />
-        <Appbar.Header>
+        <Appbar.Header style={{height: 76}}>
         {previous ?
           <Appbar.BackAction onPress={() => navigation.goBack()} /> :
           <Appbar.Action icon="ios-settings" onPress={() => navigation.navigate('config')} />

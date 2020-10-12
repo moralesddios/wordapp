@@ -5,11 +5,11 @@ import { View, SafeAreaView, FlatList, StyleSheet } from 'react-native'
 import { Surface, Button } from 'react-native-paper'
 
 import * as Actions from '../redux/actions'
-import { Verse, Tracker, SearchModal } from '../components'
+import { Verse, SearchModal } from '../components'
 
-function Bible({ setBook, setChapter, setModalVisible, fetchCurrent, fetchVerseList }) {
+function Bible({ setBook, setChapter, setModalVisible, fetchCurrent, fetchVerseList, fetchSaveMove }) {
   const listRef = useRef()
-  const { book, chapter, modal } = useSelector(state => state.app)
+  const { book, chapter, version, modal } = useSelector(state => state.app)
   const { total } = useSelector(state => state.current)
   const { data } = useSelector(state => state.verse)
 
@@ -18,7 +18,7 @@ function Bible({ setBook, setChapter, setModalVisible, fetchCurrent, fetchVerseL
 
   useEffect(() => {
     fetchCurrent([book])
-    fetchVerseList([book, chapter])
+    fetchVerseList(version, [book, chapter])
   }, [])
 
   const scrollToTop = () => {
@@ -26,22 +26,25 @@ function Bible({ setBook, setChapter, setModalVisible, fetchCurrent, fetchVerseL
   }
 
   const handlePrev = () => {
+    fetchSaveMove([book, chapter-1])
     setChapter(chapter - 1)
-    fetchVerseList([book, chapter - 1])
+    fetchVerseList(version, [book, chapter - 1])
     scrollToTop()
   }
 
   const handleNext = () => {
+    fetchSaveMove([book, chapter+1])
     setChapter(chapter + 1)
-    fetchVerseList([book, chapter + 1])
+    fetchVerseList(version, [book, chapter + 1])
     scrollToTop()
   }
 
   const handleNavigate = (book, chapter) => {
+    fetchSaveMove([book, chapter])
     setBook(book)
     setChapter(chapter)
     fetchCurrent([book])
-    fetchVerseList([book, chapter])
+    fetchVerseList(version, [book, chapter])
     setModalVisible(false)
     scrollToTop()
   }
@@ -62,9 +65,8 @@ function Bible({ setBook, setChapter, setModalVisible, fetchCurrent, fetchVerseL
           maxToRenderPerBatch={10}
         />
       </SafeAreaView>
-      <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6 }}>
         <Button icon="ios-arrow-back" onPress={handlePrev} disabled={chapter === 1} />
-        <Tracker />
         <Button icon="ios-arrow-forward" onPress={handleNext} disabled={chapter === total} />
       </View>
       <SearchModal toggleSearchModal={toggleSearchModal} handleNavigate={handleNavigate} />
@@ -93,6 +95,7 @@ const mapDispatchToProps = dispatch => {
     setModalVisible: Actions.setModalVisible,
     fetchCurrent: Actions.fetchCurrent,
     fetchVerseList: Actions.fetchVerseList,
+    fetchSaveMove: Actions.fetchSaveMove,
   }, dispatch);
 }
 

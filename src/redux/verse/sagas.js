@@ -5,11 +5,9 @@ import { listVerseSuccess, listVerseError } from './actions'
 import { VERSE_LIST_FETCH } from '../../constants/action-types'
 import { executeSql } from '../../database'
 
-const fetchVerseListAsync = async payload => {
+const fetchVerseListAsync = async (version, payload) => {
   try {
-    let tname = await AsyncStorage.getItem('TABLENAME')
-    if(tname === null) tname = 'verses'
-    const response = await executeSql(`SELECT * FROM ${tname} WHERE book_number = ? AND chapter = ? ORDER BY verse;`, payload)
+    const response = await executeSql(`SELECT * FROM ${version} WHERE book_number = ? AND chapter = ? ORDER BY verse;`, payload)
     return { success: true, data: response }
   } catch (e) {
     console.log(e)
@@ -17,8 +15,8 @@ const fetchVerseListAsync = async payload => {
   }
 }
 
-function* fetchVerseList({ payload }) {
-  const r = yield call(fetchVerseListAsync, payload)
+function* fetchVerseList({ version, payload }) {
+  const r = yield call(fetchVerseListAsync, version, payload)
   if (r.success) {
     yield put(listVerseSuccess({ data: r.data }))
   } else {

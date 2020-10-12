@@ -4,8 +4,9 @@ import {
   VERSE_LIST_ERROR
 } from '../../constants/action-types'
 
-export const fetchVerseList = params => ({
+export const fetchVerseList = (version, params) => ({
   type: VERSE_LIST_FETCH,
+  version: version,
   payload: params
 })
 
