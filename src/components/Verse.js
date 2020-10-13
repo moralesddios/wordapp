@@ -1,27 +1,23 @@
 import React, { memo, useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { compose, bindActionCreators } from 'redux'
+import { connect, useSelector } from 'react-redux'
 import { Menu, Text, useTheme } from 'react-native-paper'
 import { TouchableOpacity, AsyncStorage } from 'react-native'
 import * as Speech from 'expo-speech'
 
+import * as Actions from '../redux/actions'
+import { executeSql } from '../database'
 const regex = /<(?:.|\n)*?>/gm
 
-function Verse({ item }) {
+function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
   const { colors, dark } = useTheme()
   const [marked, setMarked] = useState(false)
+  const [markId, setMarkId] = useState(0)
   const [visible, setVisible] = useState(false)
   const { book, chapter, fontSize } = useSelector(state => state.app)
 
   useEffect(() => {
-    fetchMarks = async() => {
-      let array = []
-      setMarked(false)
-      const marks = await AsyncStorage.getItem('MARKS')
-      if(marks !== null) array = JSON.parse(marks)
-      if (array.includes(`${book}.${chapter}.${item.verse}`)) setMarked(true)
-    }
-
-    fetchMarks()
+    fetchMark([book, chapter, item.verse])
   }, [item])
 
   const openMenu = () => setVisible(true)
@@ -33,52 +29,86 @@ function Verse({ item }) {
     setVisible(false)
   }
 
-  const mark = async() => {
-    let array = []
-    const marks = await AsyncStorage.getItem('MARKS')
-    if (marks !== null) array = JSON.parse(marks)
-    array.push(`${book}.${chapter}.${item.verse}`)
-    AsyncStorage.setItem('MARKS', JSON.stringify(array))
+  const markSaved = () => {
     setMarked(true)
     setVisible(false)
   }
 
-  const unmark = async() => {
-    let array = []
-    const marks = await AsyncStorage.getItem('MARKS')
-    if(marks !== null) array = JSON.parse(marks)
-    const i = array.findIndex(e => e === `${book}.${chapter}.${item.verse}`)
-    if (i !== -1) array.splice(i, 1)
-    AsyncStorage.setItem('MARKS', JSON.stringify(array))
+  const setMark = mark => {
+    setMarkId(mark.id)
+    setMarked(true)
+  }
+
+  const removeSaved = () => {
     setMarked(false)
     setVisible(false)
   }
 
-  const getColor = () => {
-    if(dark && marked) return colors.accent
-    if(marked) return '#ccff00'
-    return '#ffffff00'
+  const mark = async() => {
+    fetchSaveMark([book, chapter, item.verse], markSaved)
+  }
+
+  const unmark = async() => {
+    fetchRemoveMark([markId], removeSaved)
+  }
+
+  const fetchMark = async params => {
+    setMarked(false)
+    try {
+      const r = await executeSql('SELECT * FROM marks WHERE book_number = ? AND chapter = ? AND verse = ?;', params)
+      if (r.length > 0){
+        setMark(r[0])
+      }
+    } catch (e) {
+      return { success: false }
+    }
   }
 
   if(item.text === '') return null
 
+  let markColor = '#ffffff00'
+  if(marked) markColor = colors.accent
+
+  let textColor = colors.text
+  if(marked) textColor = '#efefef'
+
+  let marginLeft = 0
+  let minHeight = 10
+  if(item.verse === 1) {
+    minHeight = 55
+    marginLeft = chapter > 9 ? 70 : 45
+  }
+
   return (
-    <Menu
-      visible={visible}
-      onDismiss={closeMenu}
-      anchor={
-        <TouchableOpacity onPress={openMenu} style={{ padding: 2 }}>
-          <Text style={{ color: colors.text, backgroundColor: getColor(), fontSize: fontSize, textAlign: 'justify' }}>
-            <Text style={{ color: colors.primary, fontSize: fontSize + 2, fontWeight: 'bold' }}>{`${item.verse} `}</Text>
-            {item.text.replace(regex, '')}
-          </Text>
-        </TouchableOpacity>
-      }>
-      <Menu.Item onPress={() => speechText()} title="Escuchar" icon="ios-play" />
-      {marked && <Menu.Item onPress={() => unmark()} title="Desmarcar" icon="ios-bookmark" />}
-      {!marked && <Menu.Item onPress={() => mark()} title="Marcar" icon="ios-bookmark" />}
-    </Menu>
+    <React.Fragment>
+      <Menu
+        visible={visible}
+        onDismiss={closeMenu}
+        anchor={
+          <TouchableOpacity onPress={openMenu} style={{ padding: 2 }}>
+            <Text style={{ color: textColor, backgroundColor: markColor, fontSize: fontSize, textAlign: 'justify', minHeight: minHeight, marginLeft: marginLeft }}>
+              <Text style={{ color: colors.primary, fontSize: fontSize + 2, fontWeight: 'bold' }}>{`${item.verse} `}</Text>
+              {item.text.replace(regex, '')}
+            </Text>
+          </TouchableOpacity>
+        }>
+        <Menu.Item onPress={() => speechText()} title="Escuchar" icon="ios-play" />
+        {marked && <Menu.Item onPress={() => unmark()} title="Desmarcar" icon="ios-bookmark" />}
+        {!marked && <Menu.Item onPress={() => mark()} title="Marcar" icon="ios-bookmark" />}
+      </Menu>
+      {item.verse === 1 && <Text style={{position: 'absolute', left: 0, top: -5, color: colors.accent, fontSize: 60}}>{chapter}</Text>}
+    </React.Fragment>
   )
 }
 
-export default memo(Verse)
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({
+    fetchSaveMark: Actions.fetchSaveMark,
+    fetchRemoveMark: Actions.fetchRemoveMark,
+  }, dispatch);
+}
+
+export default compose(
+  memo,
+  connect(null, mapDispatchToProps),
+)(Verse)

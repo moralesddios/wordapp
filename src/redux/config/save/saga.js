@@ -2,33 +2,27 @@ import { call, put, takeLatest, all } from 'redux-saga/effects'
 import { successSaveConfig, errorSaveConfig } from './action'
 
 import { CONFIG_SAVE_FETCH } from '../../../constants/action-types'
-import { createSql } from '../../../database'
+import { createSql, executeSql } from '../../../database'
 
-const insertAsync = async params => {
+const saveAsync = async params => {
   try {
-    const response = await createSql('INSERT INTO config (version, fontsize) VALUES (?, ?);', params)
-    return { success: true, data: response }
-  } catch (e) {
-    return { success: false }
-  }
-}
-
-const updateAsync = async params => {
-  try {
-    const response = await createSql('UPDATE config SET version=?, fontsize=? WHERE id = ?;', params)
-    return { success: true, data: response }
+    const r = await executeSql('SELECT * from config WHERE id = 1;')
+    if(r.length > 0){
+      const response = await createSql('UPDATE config SET version=?, theme=?, fontsize=? WHERE id = 1;', params)
+    } else {
+      const response = await createSql('INSERT INTO config (version, theme, fontsize) VALUES (?, ?, ?);', params)
+    }
+    return { success: true }
   } catch (e) {
     return { success: false }
   }
 }
 
 function* fetchSaveConfig({ payload, saved }) {
-  const { id, version, fontsize } = payload
-  const params = [version, fontsize, id]
-  const { success } = id ? yield call(updateAsync, params) : yield call(insertAsync, params)
+  const { success } = yield call(saveAsync, payload)
   if (success) {
     yield put(successSaveConfig())
-    saved(payload)
+    saved({ version: payload[0], theme: payload[1], fontsize: payload[2] })
   } else {
     yield put(errorSaveConfig({error: 'error'}))
   }

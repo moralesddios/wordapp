@@ -6,8 +6,8 @@ import * as FileSystem from 'expo-file-system'
 import ProgressCircle from 'react-native-progress-circle'
 
 import { Main } from './navigation'
-import { createSql, executeSql } from './database'
 import * as Actions from './redux/actions'
+import { createSql } from './database'
 class Index extends Component {
   constructor() {
     super()
@@ -20,28 +20,17 @@ class Index extends Component {
   }
 
   async componentDidMount() {
-    const { setBook, setChapter } = this.props
+    const { exists, initials, setBook, setChapter } = this.props
     // await FileSystem.deleteAsync(`${FileSystem.documentDirectory}SQLite/bible.db`, { idempotent: true })
-    this.setState({ msg: 'Verificando datos' })
-    
-    const r = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}`)
-    if (!r.includes('SQLite')){
-      await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SQLite`)
-    }
-
-    const s = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}SQLite`)
-    if(s.includes('bilbe.db')){
-      try {
-        const response = await executeSql('SELECT * FROM config where id = 1;')
-        const data = response[0]
-        setBook(data.book_number)
-        setChapter(data.chapter)
-      } catch (e) {
-        console.log(e)
+    this.setState({ msg: 'CARGA INICIAL' })
+    if(exists){
+      if(initials && initials.id){
+        setBook(initials.book_number)
+        setChapter(initials.chapter)
       }
       this.setState({ loaded: true })
     } else {
-      this.setState({ loading: true, msg: 'Descarga iniciada' })
+      this.setState({ loading: true, msg: 'DESCARGANDO DATOS' })
       const callback = downloadProgress => {
         const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite
         const p = Math.round(progress * 100)
@@ -55,8 +44,9 @@ class Index extends Component {
         callback
       )
       await downloadResumable.downloadAsync()
-      await createSql('create table if not exists config (id integer primary key not null, book_number smallint, chapter smallint, version varchar(10), fontsize tinyint);')
-      this.setState({ loaded: true, msg: 'Descarga completada' })
+      await createSql('create table if not exists config (id integer primary key not null, book_number smallint, chapter smallint, version varchar(10), fontsize tinyint, theme varchar(12));')
+      await createSql('create table if not exists marks (id integer primary key not null, book_number smallint, chapter smallint, verse smallint, color varchar(10));')
+      this.setState({ loaded: true, msg: 'INICIANDO' })
     }
   }
 
@@ -66,7 +56,7 @@ class Index extends Component {
     if (loaded) return <Main />
 
     return (
-      <Surface style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1c7ce0'}}>
+      <Surface style={{flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24, backgroundColor: '#1c7ce0'}}>
         {loading && <ProgressCircle
           percent={progress}
           radius={80}
@@ -77,8 +67,8 @@ class Index extends Component {
         >
           <Title>{`${progress}%`}</Title>
         </ProgressCircle>}
-        <Title style={{ color: 'white' }}>- CARGA INICIAL -</Title>
-        <Caption style={{ color: 'white' }}>{msg}</Caption>
+        <Title style={{ color: 'white' }}>{msg}</Title>
+        <Caption style={{ color: 'white', textAlign: 'center' }}>Se necesita conexión a internet y solo ocurrirá la primera vez que inicie la aplicación.</Caption>
       </Surface>
     )
   }

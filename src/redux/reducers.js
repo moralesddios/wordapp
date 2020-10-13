@@ -5,6 +5,7 @@ import verse from './verse/reducers'
 import chapter from './chapter/reducers'
 import current from './current/reducers'
 import config from './config/reducers'
+import mark from './mark/reducers'
 
 const reducers = combineReducers({
   app,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   chapter,
   current,
   config,
+  mark,
 })
 
 export default reducers

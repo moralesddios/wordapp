@@ -15,9 +15,9 @@ const getConfigAsync = async() => {
 
 function* fetchConfig({ setInitial }) {
   const { success, data } = yield call(getConfigAsync)
-  if (success) {
+  if (success && data.length > 0) {
     const d = data[0]
-    setInitial({ id: d.id, fontsize: d.fontsize, version: d.version })
+    if(d.version) setInitial({ version: d.version, theme: d.theme, fontsize: d.fontsize })
     yield put(successConfig({data: d}))
   } else {
     yield put(errorConfig({error: 'error'}))

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import { Surface, Subheading, Text, Button, RadioButton } from 'react-native-paper'
+import { Surface, Subheading, Caption, Text, Button, RadioButton } from 'react-native-paper'
+import { LinearGradient } from 'expo-linear-gradient'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 
@@ -10,9 +11,9 @@ import * as Actions from '../redux/actions'
 import { Tracker } from '../components'
 
 const formSchema = Yup.object().shape({
-  id: Yup.number()
-    .nullable(),
   version: Yup.string()
+    .required('Este campo es requerido.'),
+  theme: Yup.string()
     .required('Este campo es requerido.'),
   fontsize: Yup.string()
     .required('Este campo es requerido.'),
@@ -22,9 +23,9 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setFontS
   const { book, chapter } = useSelector(state => state.app)
   const { loading } = useSelector(state => state.config.save)
   const [initial, setInitial] = useState({
-    id: null,
-    version: '',
-    fontsize: 16,
+    version: 'verses',
+    theme: 'automatic',
+    fontsize: 16
   })
 
   useEffect(() => {
@@ -46,12 +47,8 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setFontS
   }
 
   const submit = values => {
-    fetchSaveConfig(values, saved)
+    fetchSaveConfig([values.version, values.theme, values.fontsize], saved)
   }
-  
-  const reset = () => {
-    console.log('Reset!!!')
-  } 
 
   return (
     <Surface style={styles.container}>
@@ -59,7 +56,6 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setFontS
         initialValues={initial}
         enableReinitialize={true}
         validationSchema={formSchema}
-        onReset={reset}
         onSubmit={submit}>
         {({ handleChange, handleSubmit, setFieldValue, errors, touched, values }) => (
           <React.Fragment>
@@ -74,12 +70,36 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setFontS
                 <Text>Traducción al lenguaje actual</Text>
               </View>
             </RadioButton.Group>
+            <Subheading>Tema</Subheading>
+            <RadioButton.Group name="theme" onValueChange={handleChange('theme')} value={values.theme}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RadioButton value="light" />
+                <LinearGradient colors={['#0B3C5D', '#328CC1']} style={{ width: 20, height: 20, borderRadius: 10, marginRight: 6 }} />
+                <Text>Claro</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RadioButton value="purple" />
+                <LinearGradient colors={['#6a1b9a', '#ec407a']} style={{ width: 20, height: 20, borderRadius: 10, marginRight: 6 }} />
+                <Text>Purpura</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RadioButton value="dark" />
+                <LinearGradient colors={['#328CC1', '#000']} style={{ width: 20, height: 20, borderRadius: 10, marginRight: 6 }} />
+                <Text>Obscuro</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <RadioButton value="automatic" />
+                <LinearGradient colors={['#CCC', '#000']} style={{ width: 20, height: 20, borderRadius: 10, marginRight: 6 }} />
+                <Text>Automático</Text>
+              </View>
+            </RadioButton.Group>
             <Subheading>Tamaño del texto</Subheading>
             <Tracker
               name="fontsize"
               onValueChange={value => handleChangeFontSize(setFieldValue, value)}
               value={values.fontsize}
             />
+            <Caption>El tema será aplicado la próxima vez que inicie la aplicación.</Caption>
             <View style={{alignItems: 'flex-end'}}>
               <Button icon="ios-save" mode="contained" loading={loading} disabled={loading} onPress={handleSubmit} style={{ marginTop: 10 }}>
                 Guardar

@@ -2,12 +2,17 @@ import { call, put, takeLatest, all } from 'redux-saga/effects'
 import { successSaveMove, errorSaveMove } from './action'
 
 import { CONFIG_MOVE_FETCH } from '../../../constants/action-types'
-import { createSql } from '../../../database'
+import { createSql, executeSql } from '../../../database'
 
 const saveAsync = async params => {
   try {
-    const response = await createSql('UPDATE config SET book_number=?, chapter=? WHERE id = 1;', params)
-    return { success: true, data: response }
+    const r = await executeSql('SELECT * from config WHERE id = 1;')
+    if(r.length > 0){
+      const response = await createSql('UPDATE config SET book_number=?, chapter=? WHERE id = 1;', params)
+    } else {
+      const response = await createSql('INSERT INTO config (book_number, chapter) VALUES (?, ?);', params)
+    }
+    return { success: true }
   } catch (e) {
     return { success: false }
   }

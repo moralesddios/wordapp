@@ -1,4 +1,3 @@
-import { AsyncStorage } from 'react-native'
 import { call, put, takeLatest, all } from 'redux-saga/effects'
 import { listVerseSuccess, listVerseError } from './actions'
 
@@ -10,7 +9,6 @@ const fetchVerseListAsync = async (version, payload) => {
     const response = await executeSql(`SELECT * FROM ${version} WHERE book_number = ? AND chapter = ? ORDER BY verse;`, payload)
     return { success: true, data: response }
   } catch (e) {
-    console.log(e)
     return { success: false }
   }
 }

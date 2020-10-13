@@ -5,6 +5,7 @@ import verseSagas from './verse/sagas'
 import chapterSagas from './chapter/sagas'
 import currentSagas from './current/sagas'
 import configSagas from './config/sagas'
+import markSagas from './mark/sagas'
 
 export default function* rootSaga() {
   yield all([
@@ -13,5 +14,6 @@ export default function* rootSaga() {
     chapterSagas(),
     currentSagas(),
     configSagas(),
+    markSagas(),
   ])
 }
