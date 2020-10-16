@@ -8,7 +8,7 @@ import { Overlay, SearchBar } from 'react-native-elements'
 import * as Actions from '../redux/actions'
 
 function SearchModal({ fetchBookList, fetchChapterList, toggleSearchModal, handleNavigate }) {
-  const { data } = useSelector(state => state.book)
+  const { data, loading } = useSelector(state => state.book)
   const { chapters } = useSelector(state => state.chapter)
   const { modal } = useSelector(state => state.app)
   const [book, setBook] = useState(null)
@@ -30,9 +30,7 @@ function SearchModal({ fetchBookList, fetchChapterList, toggleSearchModal, handl
 
   const handleSearch = value => {
     setSearch(value)
-    if(value && value.length > 2 ){
-      fetchBookList(value)
-    }
+    fetchBookList(value)
   }
 
   const handleChapter = chapter => {
@@ -47,6 +45,7 @@ function SearchModal({ fetchBookList, fetchChapterList, toggleSearchModal, handl
           <SearchBar
             platform="ios"
             cancelButtonTitle="Cerrar"
+            showLoading={loading}
             containerStyle={{ backgroundColor: colors.surface }}
             placeholder="Buscar..."
             onChangeText={handleSearch}
@@ -61,9 +60,9 @@ function SearchModal({ fetchBookList, fetchChapterList, toggleSearchModal, handl
           />
         </React.Fragment> : <ScrollView>
           <Title style={{ color: colors.primary, textAlign: 'center', marginTop: 10 }}>Versículo</Title>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap', padding: 20 }}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap', padding: 10 }}>
             {chapters.map(item =>
-              <Button mode="outlined" key={item.chapter} color={dark ? 'white' : colors.primary} onPress={() => handleChapter(item.chapter)} style={{margin: 5}}>{item.chapter}</Button>
+              <Button mode="outlined" key={item.chapter} color={dark ? 'white' : colors.primary} onPress={() => handleChapter(item.chapter)} style={{margin: 2}}>{item.chapter}</Button>
             )}
           </View>
         </ScrollView>}

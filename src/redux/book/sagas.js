@@ -10,7 +10,9 @@ const fetchBookListAsync = async search => {
     if(search===''){
       response = await executeSql('SELECT * FROM books;')
     } else {
-      response = await executeSql('SELECT * FROM books WHERE long_name LIKE ´%?%´;', [search])
+      response = await executeSql(`SELECT * FROM books WHERE replace(replace(replace(replace(replace(replace(replace(replace(
+        replace(replace(replace( lower(long_name), 'á','a'), 'ã','a'), 'â','a'), 'é','e'), 'ê','e'), 'í','i'),
+        'ó','o') ,'õ','o') ,'ô','o'),'ú','u'), 'ç','c') LIKE '%${search}%';`)
     }
     return { success: true, data: response }
   } catch (e) {

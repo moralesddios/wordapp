@@ -10,13 +10,15 @@ import { executeSql } from '../database'
 const regex = /<(?:.|\n)*?>/gm
 
 function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
-  const { colors, dark } = useTheme()
+  const { colors } = useTheme()
+  const [title, setTitle] = useState(null)
   const [marked, setMarked] = useState(false)
   const [markId, setMarkId] = useState(0)
   const [visible, setVisible] = useState(false)
   const { book, chapter, fontSize } = useSelector(state => state.app)
 
   useEffect(() => {
+    fetchStory([book, chapter, item.verse])
     fetchMark([book, chapter, item.verse])
   }, [item])
 
@@ -64,6 +66,18 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
     }
   }
 
+  const fetchStory = async params => {
+    setTitle(null)
+    try {
+      const r = await executeSql('SELECT title FROM stories WHERE book_number = ? AND chapter = ? AND verse = ?;', params)
+      if (r.length > 0){
+        setTitle(r[0].title)
+      }
+    } catch (e) {
+      return { success: false }
+    }
+  }
+
   if(item.text === '') return null
 
   let markColor = '#ffffff00'
@@ -72,15 +86,23 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
   let textColor = colors.text
   if(marked) textColor = '#efefef'
 
+  let top = -15
   let marginLeft = 0
+  let marginTop = 0
   let minHeight = 10
   if(item.verse === 1) {
     minHeight = 55
     marginLeft = chapter > 9 ? 70 : 45
+    if (title) top = 15
+  } else {
+    marginTop = 10
   }
 
   return (
     <React.Fragment>
+      {title && <Text style={{ color: colors.primary, fontSize: fontSize, fontWeight: 'bold', textAlign: 'center', marginLeft: marginLeft, marginTop: marginTop, marginBottom: 5 }}>
+        {title}
+      </Text>}
       <Menu
         visible={visible}
         onDismiss={closeMenu}
@@ -96,7 +118,7 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
         {marked && <Menu.Item onPress={() => unmark()} title="Desmarcar" icon="ios-bookmark" />}
         {!marked && <Menu.Item onPress={() => mark()} title="Marcar" icon="ios-bookmark" />}
       </Menu>
-      {item.verse === 1 && <Text style={{position: 'absolute', left: 0, top: -15, color: colors.accent, fontSize: 60}}>{chapter}</Text>}
+      {item.verse === 1 && <Text style={{position: 'absolute', left: 0, top: top, color: colors.accent, fontSize: 60}}>{chapter}</Text>}
     </React.Fragment>
   )
 }
