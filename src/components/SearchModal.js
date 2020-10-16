@@ -3,7 +3,7 @@ import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import { View, ScrollView, FlatList, Dimensions } from 'react-native'
 import { Title, Button, useTheme } from 'react-native-paper'
-import { Overlay } from 'react-native-elements'
+import { Overlay, SearchBar } from 'react-native-elements'
 
 import * as Actions from '../redux/actions'
 
@@ -12,18 +12,27 @@ function SearchModal({ fetchBookList, fetchChapterList, toggleSearchModal, handl
   const { chapters } = useSelector(state => state.chapter)
   const { modal } = useSelector(state => state.app)
   const [book, setBook] = useState(null)
-  const { colors } = useTheme()
+  const [search, setSearch] = useState('')
+  const { colors, dark } = useTheme()
 
-  const renderBook = useCallback(({ item }) => <Button mode="text" icon="ios-book" color={colors.text} onPress={() => handlePress(item.book_number)} style={{marginTop: 10}} contentStyle={{display: 'flex', justifyContent: 'flex-start'}}>{item.long_name}</Button>, [])
-  const keyExtractor = useCallback(item => item.book_number.toString(), [])
+  const renderBook = ({ item }) => <Button mode="text" icon="ios-book" color={dark ? 'white' : colors.primary} onPress={() => handlePress(item.book_number)} contentStyle={{justifyContent: 'flex-start'}}>{item.long_name}</Button>
+  const keyExtractor = item => item.book_number.toString()
 
   useEffect(() => {
-    fetchBookList()
+    setBook(null)
+    fetchBookList('')
   }, [])
 
   const handlePress = b => {
     setBook(b)
     fetchChapterList([b])
+  }
+
+  const handleSearch = value => {
+    setSearch(value)
+    if(value && value.length > 2 ){
+      fetchBookList(value)
+    }
   }
 
   const handleChapter = chapter => {
@@ -33,17 +42,28 @@ function SearchModal({ fetchBookList, fetchChapterList, toggleSearchModal, handl
 
   return (
     <Overlay isVisible={modal} onBackdropPress={toggleSearchModal} overlayStyle={{backgroundColor: colors.surface, width: Dimensions.get('window').width - 20, height: Dimensions.get('window').height - 250}}>
-      {book === null ? <FlatList
-          data={data}
-          renderItem={renderBook}
-          keyExtractor={keyExtractor}
-          initialNumToRender={20}
-          maxToRenderPerBatch={10}
-        /> : <ScrollView>
-          {/* <Title style={{ textAlign: 'center', marginTop: 10 }}>{books[book]._bname}</Title> */}
+      {book === null ? <React.Fragment>
+          <Title style={{ color: colors.primary, textAlign: 'center', marginTop: 10 }}>Capítulo</Title>
+          <SearchBar
+            platform="ios"
+            cancelButtonTitle="Cerrar"
+            containerStyle={{ backgroundColor: colors.surface }}
+            placeholder="Buscar..."
+            onChangeText={handleSearch}
+            value={search}
+          />
+          <FlatList
+            data={data}
+            renderItem={renderBook}
+            keyExtractor={keyExtractor}
+            initialNumToRender={20}
+            maxToRenderPerBatch={10}
+          />
+        </React.Fragment> : <ScrollView>
+          <Title style={{ color: colors.primary, textAlign: 'center', marginTop: 10 }}>Versículo</Title>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap', padding: 20 }}>
             {chapters.map(item =>
-              <Button mode="contained" key={item.chapter} onPress={() => handleChapter(item.chapter)} style={{margin: 5}}>{item.chapter}</Button>
+              <Button mode="outlined" key={item.chapter} color={dark ? 'white' : colors.primary} onPress={() => handleChapter(item.chapter)} style={{margin: 5}}>{item.chapter}</Button>
             )}
           </View>
         </ScrollView>}

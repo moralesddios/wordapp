@@ -2,6 +2,7 @@ import {
   SET_BOOK,
   SET_CHAPTER,
   SET_VERSION,
+  SET_THEME,
   SET_FONT_SIZE,
   SET_MODAL_VISIBLE
 } from '../../constants/action-types'
@@ -10,6 +11,7 @@ const initialState = {
   book: 10,
   chapter: 1,
   version: 'verses',
+  theme: 'automatic',
   fontSize: 16,
   modal: false,
 }
@@ -22,6 +24,8 @@ function app(state = initialState, action) {
       return { ...state, chapter: action.payload }
     case SET_VERSION:
       return { ...state, version: action.payload }
+    case SET_THEME:
+      return { ...state, theme: action.payload }
     case SET_FONT_SIZE:
       return { ...state, fontSize: action.payload }
     case SET_MODAL_VISIBLE:

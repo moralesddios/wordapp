@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Title, Caption, Surface } from 'react-native-paper'
+import { View, Text } from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import ProgressCircle from 'react-native-progress-circle'
 
-import { Main } from './navigation'
 import * as Actions from './redux/actions'
 import { createSql } from './database'
+import Paper from './paper'
 class Index extends Component {
   constructor() {
     super()
@@ -20,13 +20,14 @@ class Index extends Component {
   }
 
   async componentDidMount() {
-    const { exists, initials, setBook, setChapter } = this.props
+    const { exists, initials, setBook, setChapter, setTheme } = this.props
     // await FileSystem.deleteAsync(`${FileSystem.documentDirectory}SQLite/bible.db`, { idempotent: true })
     this.setState({ msg: 'CARGA INICIAL' })
     if(exists){
       if(initials && initials.id){
         setBook(initials.book_number)
         setChapter(initials.chapter)
+        setTheme(initials.theme)
       }
       this.setState({ loaded: true })
     } else {
@@ -53,10 +54,10 @@ class Index extends Component {
   render() {
     const { loading, loaded, progress, msg } = this.state
 
-    if (loaded) return <Main />
+    if (loaded) return <Paper />
 
     return (
-      <Surface style={{flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24, backgroundColor: '#1c7ce0'}}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24, backgroundColor: '#1c7ce0'}}>
         {loading && <ProgressCircle
           percent={progress}
           radius={80}
@@ -65,11 +66,11 @@ class Index extends Component {
           shadowColor="#999"
           bgColor="#fff"
         >
-          <Title>{`${progress}%`}</Title>
+          <Text style={{color: '#616161', fontSize: 24}}>{`${progress}%`}</Text>
         </ProgressCircle>}
-        <Title style={{ color: 'white' }}>{msg}</Title>
-        <Caption style={{ color: 'white', textAlign: 'center' }}>Se necesita conexión a internet y solo ocurrirá la primera vez que inicie la aplicación.</Caption>
-      </Surface>
+        <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', marginTop: 20 }}>{msg}</Text>
+        {loading && <Text style={{ color: 'white', textAlign: 'center' }}>Se necesita conexión a internet. Esté paso es necesario unicamente la primera vez que se inicia la aplicación.</Text>}
+      </View>
     )
   }
 }
@@ -78,6 +79,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators({
     setBook: Actions.setBook,
     setChapter: Actions.setChapter,
+    setTheme: Actions.setTheme,
   }, dispatch);
 }
 

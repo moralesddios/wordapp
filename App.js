@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
-import { DefaultTheme, DarkTheme, Provider as PaperProvider } from 'react-native-paper'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { AppearanceProvider } from 'react-native-appearance'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
 import { AppLoading } from 'expo'
@@ -11,43 +9,7 @@ import { createSql, executeSql } from './src/database'
 import store from './src/redux/store'
 import Index from './src/index'
 
-const theme = {
-  ...DefaultTheme,
-  roundness: 5,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: '#0B3C5D',
-    accent: '#328CC1',
-    text: '#1D2731'
-  },
-}
-
-const purpleTheme = {
-  ...DefaultTheme,
-  roundness: 5,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: '#6a1b9a',
-    accent: '#ec407a',
-    text: '#1D2731'
-  },
-}
-
-const darkTheme = {
-  ...DarkTheme,
-  dark: true,
-  mode: 'adaptive',
-  roundness: 2,
-  colors: {
-    ...DarkTheme.colors,
-    primary: '#0B3C5D',
-    accent: '#328CC1',
-    text: '#DFDFE3'
-  },
-}
-
 export default function App() {
-  const colorScheme = useColorScheme()
   const [dataLoaded, setDataLoaded] = useState(false)
   const [exists, setExists] = useState(false)
   const [initials, setInitials] = useState({})
@@ -84,30 +46,11 @@ export default function App() {
     )
   }
 
-  let tm = colorScheme === 'dark' ? darkTheme : theme
-  if(initials && initials.id){
-    switch(initials.theme){
-      case 'light':
-        tm = theme
-        break
-      case 'purple':
-        tm = purpleTheme
-        break
-      case 'dark':
-        tm = darkTheme
-        break
-      default:
-        //code
-    }
-  }
-
   return (
     <AppearanceProvider>
       <NavigationContainer>
         <Provider store={store}>
-          <PaperProvider settings={{ icon: props => <Ionicons {...props} /> }} theme={tm}>
-            <Index exists={exists} initials={initials} />
-          </PaperProvider>
+          <Index exists={exists} initials={initials} />
         </Provider>
       </NavigationContainer>
     </AppearanceProvider>

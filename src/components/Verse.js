@@ -96,7 +96,7 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
         {marked && <Menu.Item onPress={() => unmark()} title="Desmarcar" icon="ios-bookmark" />}
         {!marked && <Menu.Item onPress={() => mark()} title="Marcar" icon="ios-bookmark" />}
       </Menu>
-      {item.verse === 1 && <Text style={{position: 'absolute', left: 0, top: -5, color: colors.accent, fontSize: 60}}>{chapter}</Text>}
+      {item.verse === 1 && <Text style={{position: 'absolute', left: 0, top: -15, color: colors.accent, fontSize: 60}}>{chapter}</Text>}
     </React.Fragment>
   )
 }

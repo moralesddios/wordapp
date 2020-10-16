@@ -19,7 +19,7 @@ const formSchema = Yup.object().shape({
     .required('Este campo es requerido.'),
 })
 
-function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setFontSize, fetchBookList, fetchVerseList, fetchCurrent }) {
+function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme, setFontSize, fetchBookList, fetchVerseList, fetchCurrent }) {
   const { book, chapter } = useSelector(state => state.app)
   const { loading } = useSelector(state => state.config.save)
   const [initial, setInitial] = useState({
@@ -33,10 +33,11 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setFontS
   }, [])
 
   const saved = values => {
-    const { version, fontsize } = values
+    const { version, theme, fontsize } = values
     setVersion(version)
+    setTheme(theme)
     setFontSize(fontsize)
-    fetchBookList()
+    fetchBookList('')
     fetchCurrent([book])
     fetchVerseList(version, [book, chapter])
     navigation.goBack()
@@ -99,7 +100,6 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setFontS
               onValueChange={value => handleChangeFontSize(setFieldValue, value)}
               value={values.fontsize}
             />
-            <Caption>El tema será aplicado la próxima vez que inicie la aplicación.</Caption>
             <View style={{alignItems: 'flex-end'}}>
               <Button icon="ios-save" mode="contained" loading={loading} disabled={loading} onPress={handleSubmit} style={{ marginTop: 10 }}>
                 Guardar
@@ -125,6 +125,7 @@ const mapDispatchToProps = dispatch => {
     fetchSaveConfig: Actions.fetchSaveConfig,
     setVersion: Actions.setVersion,
     setFontSize: Actions.setFontSize,
+    setTheme: Actions.setTheme,
     fetchBookList: Actions.fetchBookList,
     fetchVerseList: Actions.fetchVerseList,
     fetchCurrent: Actions.fetchCurrent,

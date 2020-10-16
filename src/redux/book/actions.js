@@ -4,8 +4,9 @@ import {
   BOOK_LIST_ERROR
 } from '../../constants/action-types'
 
-export const fetchBookList = () => ({
-  type: BOOK_LIST_FETCH
+export const fetchBookList = payload => ({
+  type: BOOK_LIST_FETCH,
+  payload: payload
 })
 
 export const listBookSuccess = data => ({

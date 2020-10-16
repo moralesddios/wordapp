@@ -2,6 +2,7 @@ import {
   SET_BOOK,
   SET_CHAPTER,
   SET_VERSION,
+  SET_THEME,
   SET_FONT_SIZE,
   SET_MODAL_VISIBLE
 } from '../../constants/action-types'
@@ -16,6 +17,10 @@ export function setChapter(payload) {
 
 export function setVersion(payload) {
   return { type: SET_VERSION, payload }
+}
+
+export function setTheme(payload) {
+  return { type: SET_THEME, payload }
 }
 
 export function setFontSize(payload) {

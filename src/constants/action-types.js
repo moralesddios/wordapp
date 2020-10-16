@@ -1,6 +1,7 @@
 export const SET_BOOK = "[APP] SET_BOOK"
 export const SET_CHAPTER = "[APP] SET_CHAPTER"
 export const SET_VERSION = "[APP] SET_VERSION"
+export const SET_THEME = "[APP] SET_THEME"
 export const SET_FONT_SIZE = "[APP] SET_FONT_SIZE"
 export const SET_MODAL_VISIBLE = "[APP] SET_MODAL_VISIBLE"
 
