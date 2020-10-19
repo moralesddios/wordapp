@@ -1,13 +1,14 @@
 import React, { memo, useState, useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
-import { Menu, Text, useTheme } from 'react-native-paper'
-import { TouchableOpacity, AsyncStorage } from 'react-native'
+import { Menu, useTheme } from 'react-native-paper'
+import { TouchableOpacity, View, Text } from 'react-native'
 import * as Speech from 'expo-speech'
 
 import * as Actions from '../redux/actions'
 import { executeSql } from '../database'
-const regex = /<(?:.|\n)*?>/gm
+const regex = /\[(?:.|\n)*?\]/gm
+const regex2 = /<(?:.|\n)*?>/gm
 
 function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
   const { colors } = useTheme()
@@ -86,31 +87,25 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
   let textColor = colors.text
   if(marked) textColor = '#efefef'
 
-  let top = -15
-  let marginLeft = 0
   let marginTop = 0
-  let minHeight = 10
-  if(item.verse === 1) {
-    minHeight = 55
-    marginLeft = chapter > 9 ? 70 : 45
-    if (title) top = 15
-  } else {
+  if(item.verse !== 1) {
     marginTop = 10
   }
 
   return (
     <React.Fragment>
-      {title && <Text style={{ color: colors.primary, fontSize: fontSize, fontWeight: 'bold', textAlign: 'center', marginLeft: marginLeft, marginTop: marginTop, marginBottom: 5 }}>
+      {title && <Text style={{ color: colors.primary, fontSize: fontSize, fontWeight: 'bold', textAlign: 'center', marginTop: marginTop, marginBottom: 5 }}>
         {title}
       </Text>}
       <Menu
         visible={visible}
         onDismiss={closeMenu}
         anchor={
-          <TouchableOpacity onPress={openMenu} style={{ padding: 2 }}>
-            <Text style={{ color: textColor, backgroundColor: markColor, fontSize: fontSize, textAlign: 'justify', minHeight: minHeight, marginLeft: marginLeft }}>
+          <TouchableOpacity onPress={openMenu} style={{ padding: 2, flexDirection: 'row' }}>
+            {item.verse === 1 && <View style={{paddingRight: 10, height: 60}}><Text style={{color: colors.accent, fontSize: 42}}>{chapter}</Text></View>}
+            <Text style={{ color: textColor, backgroundColor: markColor, fontSize: fontSize, textAlign: 'justify', flexShrink: 1 }}>
               <Text style={{ color: colors.primary, fontSize: fontSize + 2, fontWeight: 'bold' }}>{`${item.verse} `}</Text>
-              {item.text.replace(regex, '')}
+              {item.text.replace(regex, '').replace(regex2, '')}
             </Text>
           </TouchableOpacity>
         }>
@@ -118,7 +113,6 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
         {marked && <Menu.Item onPress={() => unmark()} title="Desmarcar" icon="ios-bookmark" />}
         {!marked && <Menu.Item onPress={() => mark()} title="Marcar" icon="ios-bookmark" />}
       </Menu>
-      {item.verse === 1 && <Text style={{position: 'absolute', left: 0, top: top, color: colors.accent, fontSize: 60}}>{chapter}</Text>}
     </React.Fragment>
   )
 }
