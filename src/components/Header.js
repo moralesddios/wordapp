@@ -7,7 +7,8 @@ import * as Speech from 'expo-speech'
 
 import * as Actions from '../redux/actions'
 
-const regex = /<(?:.|\n)*?>/gm
+const regex = /\[(?:.|\n)*?\]/gm
+const regex2 = /<(?:.|\n)*?>/gm
 
 function Header({ scene, previous, navigation, setModalVisible }) {
   const { bookname } = useSelector(state => state.current)
@@ -40,7 +41,7 @@ function Header({ scene, previous, navigation, setModalVisible }) {
 
   const _play = () => {
     setInProgress(true)
-    data.forEach(item => _speak(item.text.replace(regex, '')))
+    data.forEach(item => _speak(item.text.replace(regex, '').replace(regex2, '')))
   }
 
   const getTitle = () => {

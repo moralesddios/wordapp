@@ -28,7 +28,7 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
 
   const speechText = () => {
     Speech.stop()
-    Speech.speak(item.text)
+    Speech.speak(item.text.replace(regex, '').replace(regex2, ''))
     setVisible(false)
   }
 
