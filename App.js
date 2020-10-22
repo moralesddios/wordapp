@@ -4,10 +4,20 @@ import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
 import { AppLoading } from 'expo'
 import * as FileSystem from 'expo-file-system'
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
 
 import { createSql, executeSql } from './src/database'
 import store from './src/redux/store'
 import Index from './src/index'
+
+i18n.translations = {
+  en: require('./src/translations/en.json'),
+  es: require('./src/translations/es.json'),
+}
+
+i18n.locale = Localization.locale;
+i18n.fallbacks = true;
 
 export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false)

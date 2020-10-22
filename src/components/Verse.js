@@ -87,14 +87,9 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
   let textColor = colors.text
   if(marked) textColor = '#efefef'
 
-  let marginTop = 0
-  if(item.verse !== 1) {
-    marginTop = 10
-  }
-
   return (
     <React.Fragment>
-      {title && <Text style={{ color: colors.primary, fontSize: fontSize, fontWeight: 'bold', textAlign: 'center', marginTop: marginTop, marginBottom: 5 }}>
+      {title && <Text style={{ color: colors.primary, fontSize: fontSize, fontWeight: 'bold', textAlign: 'center', marginTop: 10, marginBottom: 5 }}>
         {title}
       </Text>}
       <Menu

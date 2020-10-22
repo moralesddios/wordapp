@@ -19,7 +19,7 @@ const formSchema = Yup.object().shape({
     .required('Este campo es requerido.'),
 })
 
-function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme, setFontSize, fetchBookList, fetchVerseList, fetchCurrent }) {
+function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme, setFontSize, fetchVerseList, fetchCurrent }) {
   const { book, chapter } = useSelector(state => state.app)
   const { loading } = useSelector(state => state.config.save)
   const [initial, setInitial] = useState({
@@ -37,7 +37,6 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
     setVersion(version)
     setTheme(theme)
     setFontSize(fontsize)
-    fetchBookList('')
     fetchCurrent([book])
     fetchVerseList(version, [book, chapter])
     navigation.goBack()
@@ -126,7 +125,6 @@ const mapDispatchToProps = dispatch => {
     setVersion: Actions.setVersion,
     setFontSize: Actions.setFontSize,
     setTheme: Actions.setTheme,
-    fetchBookList: Actions.fetchBookList,
     fetchVerseList: Actions.fetchVerseList,
     fetchCurrent: Actions.fetchCurrent,
   }, dispatch);

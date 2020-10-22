@@ -1,2 +1,6 @@
+export { default as Start } from './Start'
 export { default as Bible } from './Bible'
+export { default as Search } from './Search'
+export { default as OldList } from './OldList'
+export { default as NewList } from './NewList'
 export { default as Config } from './Config'

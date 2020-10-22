@@ -4,9 +4,10 @@ import {
   BOOK_LIST_ERROR
 } from '../../constants/action-types'
 
-export const fetchBookList = payload => ({
+export const fetchBookList = (testament, search) => ({
   type: BOOK_LIST_FETCH,
-  payload: payload
+  testament: testament,
+  search: search
 })
 
 export const listBookSuccess = data => ({

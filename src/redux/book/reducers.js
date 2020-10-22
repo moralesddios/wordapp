@@ -14,7 +14,7 @@ const INIT_STATE = {
 const book = (state = INIT_STATE, action) => {
   switch (action.type) {
     case BOOK_LIST_FETCH:
-      return { ...state, error: null, loading: true }
+      return { ...state, data: [], error: null, loading: true }
     case BOOK_LIST_SUCCESS:
       return { ...state, data: action.payload.data, success: true, loading: false }
     case BOOK_LIST_ERROR:

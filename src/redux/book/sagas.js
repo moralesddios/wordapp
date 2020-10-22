@@ -20,8 +20,22 @@ const fetchBookListAsync = async search => {
   }
 }
 
-function* fetchBookList({ payload }) {
-  const r = yield call(fetchBookListAsync, payload)
+const fetchTestamentListAsync = async testament => {
+  try {
+    let response
+    if(testament==='old'){
+      response = await executeSql('SELECT * FROM books WHERE book_number < 470;')
+    } else {
+      response = await executeSql('SELECT * FROM books WHERE book_number > 460;')
+    }
+    return { success: true, data: response }
+  } catch (e) {
+    return { success: false }
+  }
+}
+
+function* fetchBookList({ testament, search }) {
+  const r = testament ? yield call(fetchTestamentListAsync, testament) : yield call(fetchBookListAsync, search)
   if (r.success) {
     yield put(listBookSuccess({ data: r.data }))
   } else {

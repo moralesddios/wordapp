@@ -4,6 +4,7 @@ import { connect, useSelector } from 'react-redux'
 import { Appbar } from 'react-native-paper'
 import { StatusBar } from 'expo-status-bar'
 import * as Speech from 'expo-speech'
+import i18n from 'i18n-js'
 
 import * as Actions from '../redux/actions'
 
@@ -12,7 +13,7 @@ const regex2 = /<(?:.|\n)*?>/gm
 
 function Header({ scene, previous, navigation, setModalVisible }) {
   const { bookname } = useSelector(state => state.current)
-  const { chapter, modal } = useSelector(state => state.app)
+  const { chapter } = useSelector(state => state.app)
   const { data } = useSelector(state => state.verse)
   const [inProgress, setInProgress] = useState(false)
 
@@ -57,7 +58,7 @@ function Header({ scene, previous, navigation, setModalVisible }) {
   const getSubtitle = () => {
     let subtitle = ''
     if (['bible'].includes(name)) {
-      subtitle = `Capítulo ${chapter}`
+      subtitle = `${i18n.t('chapter')} ${chapter}`
     } else {
       subtitle = null
     }
@@ -67,15 +68,14 @@ function Header({ scene, previous, navigation, setModalVisible }) {
   return (
     <React.Fragment>
       <StatusBar style="light" />
-        <Appbar.Header style={{height: 76}}>
-        {previous ?
-          <Appbar.BackAction onPress={() => navigation.goBack()} /> :
-          <Appbar.Action icon="ios-settings" onPress={() => navigation.navigate('config')} />
+        <Appbar.Header style={{height: name === 'bible' ? 76 : 50}}>
+        {['bible', 'search', 'old', 'new', 'config'].includes(name) && previous &&
+          <Appbar.BackAction onPress={() => navigation.goBack()} />
         }
-        <Appbar.Content title={getTitle()} subtitle={getSubtitle()}  />
+        <Appbar.Content title={getTitle()} subtitle={getSubtitle()} />
         {inProgress && name === 'bible' && <Appbar.Action icon="ios-square" onPress={() => _stop()} />}
         {!inProgress && name === 'bible' && <Appbar.Action icon="ios-play" onPress={() => _play()} />}
-        {name === 'bible' && <Appbar.Action icon="ios-search" onPress={() => setModalVisible(!modal)} />}
+        {name === 'bible' && <Appbar.Action icon="ios-search" onPress={() => navigation.replace('search')} />}
       </Appbar.Header>
     </React.Fragment>
   )
