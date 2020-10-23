@@ -64,11 +64,11 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
             <RadioButton.Group name="version" onValueChange={handleChange('version')} value={values.version}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="verses" />
-                <Text>Reina Valera</Text>
+                <Text>{i18n.t('primary')}</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="averses" />
-                <Text>Traducción al lenguaje actual</Text>
+                <Text>{i18n.t('secondary')}</Text>
               </View>
             </RadioButton.Group>
             <Subheading>{i18n.t('theme')}</Subheading>

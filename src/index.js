@@ -39,7 +39,7 @@ class Index extends Component {
         this.setState({ progress: p })
       }
 
-      let url = i18n.locale === 'en' ? 'https://www.dropbox.com/s/03x1taqovvvbj56/bible.db?dl=1' : 'https://www.dropbox.com/s/m7sjkidsdwunq99/db.db?dl=1'
+      let url = ['en', 'en-US'].includes(i18n.locale) ? 'https://www.dropbox.com/s/03x1taqovvvbj56/bible.db?dl=1' : 'https://www.dropbox.com/s/m7sjkidsdwunq99/db.db?dl=1'
       
       const downloadResumable = FileSystem.createDownloadResumable(
         url, `${FileSystem.documentDirectory}SQLite/bilbe.db`, {}, callback
