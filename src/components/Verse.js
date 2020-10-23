@@ -4,6 +4,7 @@ import { connect, useSelector } from 'react-redux'
 import { Menu, useTheme } from 'react-native-paper'
 import { TouchableOpacity, View, Text } from 'react-native'
 import * as Speech from 'expo-speech'
+import i18n from 'i18n-js'
 
 import * as Actions from '../redux/actions'
 import { executeSql } from '../database'
@@ -104,9 +105,9 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
             </Text>
           </TouchableOpacity>
         }>
-        <Menu.Item onPress={() => speechText()} title="Escuchar" icon="ios-play" />
-        {marked && <Menu.Item onPress={() => unmark()} title="Desmarcar" icon="ios-bookmark" />}
-        {!marked && <Menu.Item onPress={() => mark()} title="Marcar" icon="ios-bookmark" />}
+        <Menu.Item onPress={() => speechText()} title={i18n.t('listen')} icon="ios-play" />
+        {marked && <Menu.Item onPress={() => unmark()} title={i18n.t('unmark')} icon="ios-bookmark" />}
+        {!marked && <Menu.Item onPress={() => mark()} title={i18n.t('mark')} icon="ios-bookmark" />}
       </Menu>
     </React.Fragment>
   )

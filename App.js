@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import { Provider } from 'react-redux'
 import { AppLoading } from 'expo'
 import * as FileSystem from 'expo-file-system'
-import * as Localization from 'expo-localization';
-import i18n from 'i18n-js';
+import * as Localization from 'expo-localization'
+import i18n from 'i18n-js'
 
 import { createSql, executeSql } from './src/database'
 import store from './src/redux/store'

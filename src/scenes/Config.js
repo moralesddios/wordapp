@@ -6,6 +6,7 @@ import { Surface, Subheading, Caption, Text, Button, RadioButton } from 'react-n
 import { LinearGradient } from 'expo-linear-gradient'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
+import i18n from 'i18n-js'
 
 import * as Actions from '../redux/actions'
 import { Tracker } from '../components'
@@ -59,7 +60,7 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
         onSubmit={submit}>
         {({ handleChange, handleSubmit, setFieldValue, errors, touched, values }) => (
           <React.Fragment>
-            <Subheading>Versión</Subheading>
+            <Subheading>{i18n.t('version')}</Subheading>
             <RadioButton.Group name="version" onValueChange={handleChange('version')} value={values.version}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="verses" />
@@ -70,30 +71,30 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
                 <Text>Traducción al lenguaje actual</Text>
               </View>
             </RadioButton.Group>
-            <Subheading>Tema</Subheading>
+            <Subheading>{i18n.t('theme')}</Subheading>
             <RadioButton.Group name="theme" onValueChange={handleChange('theme')} value={values.theme}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="light" />
                 <LinearGradient colors={['#0B3C5D', '#328CC1']} style={{ width: 20, height: 20, borderRadius: 10, marginRight: 6 }} />
-                <Text>Claro</Text>
+                <Text>{i18n.t('light')}</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="purple" />
                 <LinearGradient colors={['#6a1b9a', '#ec407a']} style={{ width: 20, height: 20, borderRadius: 10, marginRight: 6 }} />
-                <Text>Purpura</Text>
+                <Text>{i18n.t('purple')}</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="dark" />
                 <LinearGradient colors={['#328CC1', '#000']} style={{ width: 20, height: 20, borderRadius: 10, marginRight: 6 }} />
-                <Text>Obscuro</Text>
+                <Text>{i18n.t('dark')}</Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <RadioButton value="automatic" />
                 <LinearGradient colors={['#CCC', '#000']} style={{ width: 20, height: 20, borderRadius: 10, marginRight: 6 }} />
-                <Text>Automático</Text>
+                <Text>{i18n.t('automatic')}</Text>
               </View>
             </RadioButton.Group>
-            <Subheading>Tamaño del texto</Subheading>
+            <Subheading>{i18n.t('fontsize')}</Subheading>
             <Tracker
               name="fontsize"
               onValueChange={value => handleChangeFontSize(setFieldValue, value)}
@@ -101,7 +102,7 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
             />
             <View style={{alignItems: 'flex-end'}}>
               <Button icon="ios-save" mode="contained" loading={loading} disabled={loading} onPress={handleSubmit} style={{ marginTop: 10 }}>
-                Guardar
+                {i18n.t('save')}
               </Button>
             </View>
           </React.Fragment>

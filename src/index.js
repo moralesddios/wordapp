@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { View, Text } from 'react-native'
 import * as FileSystem from 'expo-file-system'
 import ProgressCircle from 'react-native-progress-circle'
+import i18n from 'i18n-js'
 
 import * as Actions from './redux/actions'
 import { createSql } from './database'
@@ -31,18 +32,17 @@ class Index extends Component {
       }
       this.setState({ loaded: true })
     } else {
-      this.setState({ loading: true, msg: 'DESCARGANDO DATOS' })
+      this.setState({ loading: true, msg: i18n.t('title') })
       const callback = downloadProgress => {
         const progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite
         const p = Math.round(progress * 100)
         this.setState({ progress: p })
       }
+
+      let url = i18n.locale === 'en' ? 'https://www.dropbox.com/s/03x1taqovvvbj56/bible.db?dl=1' : 'https://www.dropbox.com/s/m7sjkidsdwunq99/db.db?dl=1'
       
       const downloadResumable = FileSystem.createDownloadResumable(
-        'https://www.dropbox.com/s/m7sjkidsdwunq99/db.db?dl=1',
-        `${FileSystem.documentDirectory}SQLite/bilbe.db`,
-        {},
-        callback
+        url, `${FileSystem.documentDirectory}SQLite/bilbe.db`, {}, callback
       )
       await downloadResumable.downloadAsync()
       await createSql('create table if not exists config (id integer primary key not null, book_number smallint, chapter smallint, version varchar(10), fontsize tinyint, theme varchar(12));')
@@ -69,7 +69,7 @@ class Index extends Component {
           <Text style={{color: '#616161', fontSize: 24}}>{`${progress}%`}</Text>
         </ProgressCircle>}
         <Text style={{ color: 'white', fontSize: 18, fontWeight: 'bold', marginTop: 20 }}>{msg}</Text>
-        {loading && <Text style={{ color: 'white', textAlign: 'center' }}>Se necesita conexión a internet. Esté paso es necesario unicamente la primera vez que se inicia la aplicación.</Text>}
+        {loading && <Text style={{ color: 'white', textAlign: 'center', marginTop: 5 }}>{i18n.t('message')}</Text>}
       </View>
     )
   }

@@ -50,10 +50,10 @@ function Search({ navigation, setaBook, setChapter, fetchCurrent, fetchSaveMove,
         <Title style={{ textAlign: 'center', marginTop: 10 }}>{i18n.t('chapter')}</Title>
         <SearchBar
           platform="ios"
-          cancelButtonTitle={`${i18n.t('close')}`}
+          cancelButtonTitle={i18n.t('close')}
           showLoading={loading}
           containerStyle={{ backgroundColor: '#ffffff00' }}
-          placeholder={`${i18n.t('search-')}`}
+          placeholder={i18n.t('search-')}
           onChangeText={handleSearch}
           value={search}
         />

@@ -2,6 +2,7 @@
   "resume": "Resume Reading",
   "search": "Search",
   "search-": "Search...",
+  "save": "Save",
   "close": "Close",
   "old": "Old Testament",
   "new": "New Testament",
@@ -9,5 +10,19 @@
   "bookmarks": "Bookmarks",
   "settings": "Settings",
   "chapter": "Chapter",
-  "verse": "Verse"
+  "verse": "Verse",
+  "listen": "Listen",
+  "mark": "Mark",
+  "unmark": "Unmark",
+  "version": "Version",
+  "theme": "Theme",
+  "fontsize": "Text Size",
+  "light": "Light",
+  "dark": "Dark",
+  "purple": "Purple",
+  "automatic": "Automatic",
+  "primary": "King James",
+  "secondary": "New International Version",
+  "title": "Downloading Data",
+  "message": "Internet connection required. This step is necessary only the first time the application is started."
 }
