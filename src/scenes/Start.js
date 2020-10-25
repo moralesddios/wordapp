@@ -27,11 +27,15 @@ function Start({ navigation, fetchCurrent }) {
     image: {
       flex: 1,
       resizeMode: 'cover',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
     item: {
-      flex: 1
+      flex: 1,
+    },
+    inside: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#FFFFFF00'
     },
     title: {
       color: '#FFF',
@@ -58,39 +62,49 @@ function Start({ navigation, fetchCurrent }) {
       <View style={styles.row}>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('bible')}>
           <ImageBackground source={require('../../assets/one.jpg')} style={styles.image}>
-            <Subheading style={styles.quote}>{bookname}:{chapter}</Subheading>
-            <Title style={styles.title}>{i18n.t('resume')}</Title>
+            <View style={styles.inside}>
+              <Subheading style={styles.quote}>{bookname}:{chapter}</Subheading>
+              <Title style={styles.title}>{i18n.t('resume')}</Title>
+            </View>
           </ImageBackground>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('search')}>
           <ImageBackground source={require('../../assets/two.jpg')} style={styles.image}>
-            <Title style={styles.title}>{i18n.t('search')}</Title>
+            <View style={styles.inside}>
+              <Title style={styles.title}>{i18n.t('search')}</Title>
+            </View>
           </ImageBackground>
         </TouchableOpacity>
       </View>
       <View style={styles.row}>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('old')}>
           <ImageBackground source={require('../../assets/tree.jpg')} style={styles.image}>
-
-            <Title style={styles.title}>{i18n.t('old')}</Title>
+            <View style={styles.inside}>
+              <Title style={styles.title}>{i18n.t('old')}</Title>
+            </View>
           </ImageBackground>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('new')}>
           <ImageBackground source={require('../../assets/four.jpg')} style={styles.image}>
-            <Title style={styles.title}>{i18n.t('new')}</Title>
+            <View style={styles.inside}>
+              <Title style={styles.title}>{i18n.t('new')}</Title>
+            </View>
           </ImageBackground>
         </TouchableOpacity>
       </View>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.item}>
+        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('bookmarks')}>
           <ImageBackground source={require('../../assets/five.jpg')} style={styles.image}>
-            <Subheading style={styles.quote}>{i18n.t('coming')}</Subheading>
-            <Title style={styles.title}>{i18n.t('bookmarks')}</Title>
+            <View style={styles.inside}>
+              <Title style={styles.title}>{i18n.t('bookmarks')}</Title>
+            </View>
           </ImageBackground>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('config')}>
           <ImageBackground source={require('../../assets/six.jpg')} style={styles.image}>
-            <Title style={styles.title}>{i18n.t('settings')}</Title>
+            <View style={styles.inside}>
+              <Title style={styles.title}>{i18n.t('settings')}</Title>
+            </View>
           </ImageBackground>
         </TouchableOpacity>
       </View>

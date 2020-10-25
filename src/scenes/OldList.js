@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
-import { View, ScrollView, FlatList } from 'react-native'
+import { View, SafeAreaView, ScrollView, FlatList } from 'react-native'
 import { Surface, Title, Button, ActivityIndicator, useTheme } from 'react-native-paper'
 import i18n from 'i18n-js'
 
@@ -14,7 +14,7 @@ function OldList({ navigation, setaBook, setChapter, fetchCurrent, fetchSaveMove
   const [book, setBook] = useState(null)
   const { colors, dark } = useTheme()
 
-  const renderBook = ({ item }) => <Button mode="text" icon="ios-book" color={dark ? 'white' : colors.primary} onPress={() => handlePress(item.book_number)} contentStyle={{ justifyContent: 'flex-start' }}>{item.long_name}</Button>
+  const renderBook = ({ item }) => <Button mode="outlined" color={dark ? 'white' : colors.primary} onPress={() => handlePress(item.book_number)} style={{flex: 1, margin: 2}} contentStyle={{ justifyContent: 'flex-start' }}>{item.long_name}</Button>
   const keyExtractor = item => item.book_number.toString()
 
   useEffect(() => {
@@ -38,25 +38,28 @@ function OldList({ navigation, setaBook, setChapter, fetchCurrent, fetchSaveMove
   }
 
   return (
-    <Surface style={{ flex: 1, paddingHorizontal: 5, paddingBottom: 20 }}>
-      {book === null ? <React.Fragment>
-        <Title style={{ textAlign: 'center', marginTop: 10 }}>{i18n.t('chapter')}</Title>
-        {loading && <ActivityIndicator animating={true} color={colors.primary} />}
-        <FlatList
-          data={data}
-          renderItem={renderBook}
-          keyExtractor={keyExtractor}
-          initialNumToRender={20}
-          maxToRenderPerBatch={10}
-        />
-      </React.Fragment> : <ScrollView>
-          <Title style={{ textAlign: 'center', marginTop: 10 }}>{i18n.t('verse')}</Title>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap', padding: 10 }}>
-            {chapters.map(item =>
-              <Button mode="outlined" key={item.chapter} color={dark ? 'white' : colors.primary} onPress={() => handleChapter(item.chapter)} style={{ margin: 2 }}>{item.chapter}</Button>
-            )}
-          </View>
-        </ScrollView>}
+    <Surface style={{ flex: 1, paddingTop: 10, paddingHorizontal: 5, paddingBottom: 20 }}>
+      <SafeAreaView style={{flex: 1}}>
+        {book === null ? <React.Fragment>
+          {loading && <ActivityIndicator animating={true} color={colors.primary} />}
+          <FlatList
+            data={data}
+            renderItem={renderBook}
+            keyExtractor={keyExtractor}
+            initialNumToRender={20}
+            maxToRenderPerBatch={10}
+            numColumns={2}
+            columnWrapperStyle={{flex: 1, justifyContent: 'space-around'}}
+          />
+        </React.Fragment> : <ScrollView>
+            <Title style={{ textAlign: 'center', marginTop: 10 }}>{i18n.t('verse')}</Title>
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap', padding: 10 }}>
+              {chapters.map(item =>
+                <Button mode="outlined" key={item.chapter} color={dark ? 'white' : colors.primary} onPress={() => handleChapter(item.chapter)} style={{ margin: 2 }}>{item.chapter}</Button>
+              )}
+            </View>
+          </ScrollView>}
+      </SafeAreaView>
     </Surface>
   )
 }

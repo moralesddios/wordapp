@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.4.2",
+    "version": "1.4.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,12 +25,12 @@
     ],
     "ios": {
       "bundleIdentifier": "moralesddios.bible",
-      "buildNumber": "1.4.2",
+      "buildNumber": "1.4.3",
       "supportsTablet": true
     },
     "android": {
       "package": "moralesddios.bible",
-      "versionCode": 142,
+      "versionCode": 143,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1c7ce0"

@@ -69,7 +69,7 @@ function Header({ scene, previous, navigation, setModalVisible }) {
     <React.Fragment>
       <StatusBar style="light" />
         <Appbar.Header style={{height: name === 'bible' ? 76 : 50}}>
-        {['bible', 'search', 'old', 'new', 'config'].includes(name) && previous &&
+        {['bible', 'search', 'old', 'new', 'bookmarks', 'config'].includes(name) && previous &&
           <Appbar.BackAction onPress={() => navigation.goBack()} />
         }
         <Appbar.Content title={getTitle()} subtitle={getSubtitle()} />

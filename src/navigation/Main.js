@@ -3,7 +3,7 @@ import { createStackNavigator, TransitionPresets } from '@react-navigation/stack
 import i18n from 'i18n-js'
 
 import { Header } from '../components'
-import { Start, Bible, Search, OldList, NewList, Config } from '../scenes'
+import { Start, Bible, Search, OldList, NewList, Bookmarks, Config } from '../scenes'
 
 const Stack = createStackNavigator()
 
@@ -40,6 +40,7 @@ export default function Main() {
       <Stack.Screen name="old" component={OldList} options={{ ...TransitionPresets.SlideFromRightIOS, title: i18n.t('old') }} />
       <Stack.Screen name="new" component={NewList} options={{ ...TransitionPresets.SlideFromRightIOS, title: i18n.t('new') }} />
       <Stack.Screen name="bible" component={Bible} options={{ ...TransitionPresets.SlideFromRightIOS, title: '' }} />
+      <Stack.Screen name="bookmarks" component={Bookmarks} options={{ ...TransitionPresets.SlideFromRightIOS, title: i18n.t('bookmarks') }} />
       <Stack.Screen name="config" component={Config} options={{ ...TransitionPresets.SlideFromRightIOS, title: i18n.t('settings') }} />
     </Stack.Navigator>
   )
