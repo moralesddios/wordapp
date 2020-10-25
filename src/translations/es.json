@@ -24,5 +24,6 @@
   "primary": "Reina Valera",
   "secondary": "Traducción al lenguaje actual",
   "title": "Descargando Datos",
+  "empty": "Aun no agregaste ningún marcador. Para agregar un marcador ve a modo lectura, haz clic en un verso y presiona marcar en el meú emergente.",
   "message": "Se necesita conexión a internet. Esté paso es necesario unicamente la primera vez que se inicia la aplicación."
 }

@@ -24,5 +24,6 @@
   "primary": "King James",
   "secondary": "New International Version",
   "title": "Downloading Data",
+  "empty": "You haven't added any bookmarks yet. To add a bookmark go to reading mode, click on a verse and press mark in the pop-up menu.",
   "message": "Internet connection required. This step is necessary only the first time the application is started."
 }

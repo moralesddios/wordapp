@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
-import { TouchableOpacity, SafeAreaView, FlatList, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, SafeAreaView, FlatList, StyleSheet } from 'react-native'
 import { Surface, Text } from 'react-native-paper'
+import i18n from 'i18n-js'
 
 import * as Actions from '../redux/actions'
 
@@ -20,6 +21,16 @@ function Bookmarks({ navigation, fetchMarks, setBook, setChapter, fetchCurrent, 
       <TouchableOpacity style={{marginTop: 10}} onPress={() => handleNavigate(item)}>
         <Text style={{fontSize: fontSize, textAlign: 'justify', flexShrink: 1}}>{text} <Text style={{fontWeight: 'bold'}}>{item.long_name} {item.chapter}:{item.verse}</Text></Text>
       </TouchableOpacity>
+    )
+  }
+
+  const ListEmpty = () => {
+    return (
+      <View style={{flex: 1, marginTop: 10}}>
+        <Text style={{ textAlign: 'center', fontWeight: 'normal', color: 'gray' }}>
+          {i18n.t('empty')}
+        </Text>
+      </View>
     )
   }
 
@@ -59,6 +70,7 @@ function Bookmarks({ navigation, fetchMarks, setBook, setChapter, fetchCurrent, 
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           style={{ marginHorizontal: 15, marginVertical: 5 }}
+          ListEmptyComponent={ListEmpty}
         />
       </SafeAreaView>
     </Surface>
