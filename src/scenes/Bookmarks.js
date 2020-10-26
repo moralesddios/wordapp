@@ -7,6 +7,9 @@ import i18n from 'i18n-js'
 
 import * as Actions from '../redux/actions'
 
+const regex = /\[(?:.|\n)*?\]/gm
+const regex2 = /<(?:.|\n)*?>/gm
+
 function Bookmarks({ navigation, fetchMarks, setBook, setChapter, fetchCurrent, fetchSaveMove, fetchVerseList }) {
   const { version, fontSize } = useSelector(state => state.app)
   const { data, loading } = useSelector(state => state.mark.list)
@@ -15,7 +18,8 @@ function Bookmarks({ navigation, fetchMarks, setBook, setChapter, fetchCurrent, 
   const keyExtractor = useCallback(item => item.verse.toString(), [])
 
   const Item = ({ item }) => {
-    const text = item.text.length < 73 ? `${item.text}` : `${item.text.substring(0, 70)}...`
+    const txt = item.text.replace(regex, '').replace(regex2, '')
+    const text = txt.length < 73 ? `${txt}` : `${txt.substring(0, 70)}...`
   
     return (
       <TouchableOpacity style={{marginTop: 10}} onPress={() => handleNavigate(item)}>
