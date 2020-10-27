@@ -4,7 +4,7 @@ import {
   SET_VERSION,
   SET_THEME,
   SET_FONT_SIZE,
-  SET_MODAL_VISIBLE
+  SET_AVATAR_URL
 } from '../../constants/action-types'
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
   version: 'verses',
   theme: 'automatic',
   fontSize: 16,
-  modal: false,
+  avatar: '',
 }
 
 function app(state = initialState, action) {
@@ -28,8 +28,8 @@ function app(state = initialState, action) {
       return { ...state, theme: action.payload }
     case SET_FONT_SIZE:
       return { ...state, fontSize: action.payload }
-    case SET_MODAL_VISIBLE:
-      return { ...state, modal: action.payload }
+    case SET_AVATAR_URL:
+      return { ...state, avatar: action.payload }
     default:
       return state
   }

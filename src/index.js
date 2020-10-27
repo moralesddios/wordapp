@@ -21,7 +21,7 @@ class Index extends Component {
   }
 
   async componentDidMount() {
-    const { exists, initials, setBook, setChapter, setTheme } = this.props
+    const { exists, initials, setBook, setChapter, setTheme, setAvatarUrl } = this.props
     // await FileSystem.deleteAsync(`${FileSystem.documentDirectory}SQLite/bible.db`, { idempotent: true })
     this.setState({ msg: 'CARGA INICIAL' })
     if(exists){
@@ -29,6 +29,7 @@ class Index extends Component {
         setBook(initials.book_number)
         setChapter(initials.chapter)
         setTheme(initials.theme)
+        setAvatarUrl(initials.avatar)
       }
       this.setState({ loaded: true })
     } else {
@@ -47,6 +48,7 @@ class Index extends Component {
       await downloadResumable.downloadAsync()
       await createSql('create table if not exists config (id integer primary key not null, book_number smallint, chapter smallint, version varchar(10), fontsize tinyint, theme varchar(12));')
       await createSql('create table if not exists marks (id integer primary key not null, book_number smallint, chapter smallint, verse smallint, color varchar(10));')
+      
       this.setState({ loaded: true, msg: 'INICIANDO' })
     }
   }
@@ -80,6 +82,7 @@ const mapDispatchToProps = dispatch => {
     setBook: Actions.setBook,
     setChapter: Actions.setChapter,
     setTheme: Actions.setTheme,
+    setAvatarUrl: Actions.setAvatarUrl,
   }, dispatch);
 }
 

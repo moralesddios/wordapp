@@ -16,7 +16,7 @@ function Search({ navigation, setaBook, setChapter, fetchCurrent, fetchSaveMove,
   const [search, setSearch] = useState('')
   const { colors, dark } = useTheme()
 
-  const renderBook = ({ item }) => <Button mode="outlined" color={dark ? 'white' : colors.primary} onPress={() => handlePress(item.book_number)} style={{margin: 2}} contentStyle={{ justifyContent: 'flex-start' }}>{item.long_name}</Button>
+  const renderBook = ({ item }) => <Button mode="outlined" color={dark ? 'white' : colors.primary} onPress={() => handlePress(item.book_number)} style={{marginHorizontal: 6, marginVertical: 2}} contentStyle={{ justifyContent: 'flex-start' }}>{item.long_name}</Button>
   const keyExtractor = item => item.book_number.toString()
 
   useEffect(() => {

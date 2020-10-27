@@ -29,12 +29,24 @@ export default function App() {
     if (!r.includes('SQLite')){
       await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SQLite`)
     }
+    if (!r.includes('wordapp')){
+      await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}wordapp`)
+    }
     const s = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}SQLite`)
     if(s.includes('bilbe.db')){
       setExists(true)
       try {
         await createSql('create table if not exists config (id integer primary key not null, book_number smallint, chapter smallint, version varchar(10), fontsize tinyint, theme varchar(12));')
         await createSql('create table if not exists marks (id integer primary key not null, book_number smallint, chapter smallint, verse smallint, color varchar(10));')
+      } catch (e) {
+        console.log(e)
+      }
+      try {
+        await createSql('alter table config add avatar text;')
+      } catch (e) {
+        console.log(e)
+      }
+      try {
         const resp = await executeSql('SELECT * FROM config where id = 1;')
         if(resp.length > 0){
           const data = resp[0]

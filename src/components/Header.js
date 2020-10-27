@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
-import { Appbar } from 'react-native-paper'
+import { Appbar, Avatar } from 'react-native-paper'
 import { StatusBar } from 'expo-status-bar'
+import * as FileSystem from 'expo-file-system'
 import * as Speech from 'expo-speech'
 import i18n from 'i18n-js'
 
@@ -13,7 +14,7 @@ const regex2 = /<(?:.|\n)*?>/gm
 
 function Header({ scene, previous, navigation, setModalVisible }) {
   const { bookname } = useSelector(state => state.current)
-  const { chapter } = useSelector(state => state.app)
+  const { avatar, chapter } = useSelector(state => state.app)
   const { data } = useSelector(state => state.verse)
   const [inProgress, setInProgress] = useState(false)
 
@@ -68,10 +69,15 @@ function Header({ scene, previous, navigation, setModalVisible }) {
   return (
     <React.Fragment>
       <StatusBar style="light" />
-        <Appbar.Header style={{height: name === 'bible' ? 76 : 50}}>
+        <Appbar.Header style={{height: 76}}>
         {['bible', 'search', 'old', 'new', 'bookmarks', 'config'].includes(name) && previous &&
           <Appbar.BackAction onPress={() => navigation.goBack()} />
         }
+        <Avatar.Image
+          size={40}
+          source={avatar ? {uri:`${FileSystem.documentDirectory}wordapp/avatar`} : require('../../assets/avatar.png')}
+          style={{marginLeft: previous ? 0 : 14}}
+        />
         <Appbar.Content title={getTitle()} subtitle={getSubtitle()} />
         {inProgress && name === 'bible' && <Appbar.Action icon="ios-square" onPress={() => _stop()} />}
         {!inProgress && name === 'bible' && <Appbar.Action icon="ios-play" onPress={() => _play()} />}

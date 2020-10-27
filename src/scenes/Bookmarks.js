@@ -2,7 +2,8 @@ import React, { useEffect, useCallback } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import { View, TouchableOpacity, SafeAreaView, FlatList, StyleSheet } from 'react-native'
-import { Surface, Text } from 'react-native-paper'
+import { Surface, Text, useTheme } from 'react-native-paper'
+import { UIActivityIndicator } from 'react-native-indicators'
 import i18n from 'i18n-js'
 
 import * as Actions from '../redux/actions'
@@ -13,6 +14,7 @@ const regex2 = /<(?:.|\n)*?>/gm
 function Bookmarks({ navigation, fetchMarks, setBook, setChapter, fetchCurrent, fetchSaveMove, fetchVerseList }) {
   const { version, fontSize } = useSelector(state => state.app)
   const { data, loading } = useSelector(state => state.mark.list)
+  const { colors } = useTheme()
 
   const renderVerse = useCallback(({ item }) => <Item item={item} />, [])
   const keyExtractor = useCallback(item => item.verse.toString(), [])
@@ -67,15 +69,16 @@ function Bookmarks({ navigation, fetchMarks, setBook, setChapter, fetchCurrent, 
   return (
     <Surface style={styles.container}>
       <SafeAreaView style={styles.list}>
-        <FlatList
-          data={data}
-          renderItem={renderVerse}
-          keyExtractor={keyExtractor}
-          initialNumToRender={10}
-          maxToRenderPerBatch={10}
-          style={{ marginHorizontal: 15, marginVertical: 5 }}
-          ListEmptyComponent={ListEmpty}
-        />
+        {loading ? <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><UIActivityIndicator color={colors.primary} /></View> :
+          <FlatList
+            data={data}
+            renderItem={renderVerse}
+            keyExtractor={keyExtractor}
+            initialNumToRender={10}
+            maxToRenderPerBatch={10}
+            style={{ marginHorizontal: 15, marginVertical: 5 }}
+            ListEmptyComponent={ListEmpty}
+          />}
       </SafeAreaView>
     </Surface>
   )

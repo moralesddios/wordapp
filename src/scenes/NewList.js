@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import { View, SafeAreaView, ScrollView, FlatList } from 'react-native'
-import { Surface, Title, Button, ActivityIndicator, useTheme } from 'react-native-paper'
+import { Surface, Title, Button, useTheme } from 'react-native-paper'
+import { UIActivityIndicator } from 'react-native-indicators'
 import i18n from 'i18n-js'
 
 import * as Actions from '../redux/actions'
@@ -41,7 +42,7 @@ function NewList({ navigation, setaBook, setChapter, fetchCurrent, fetchSaveMove
     <Surface style={{ flex: 1, paddingTop: 10, paddingHorizontal: 5, paddingBottom: 20 }}>
       <SafeAreaView style={{flex: 1}}>
         {book === null ? <React.Fragment>
-          {loading && <ActivityIndicator animating={true} color={colors.primary} />}
+          {loading ? <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><UIActivityIndicator color={colors.primary} /></View> :
           <FlatList
             data={data}
             renderItem={renderBook}
@@ -50,7 +51,7 @@ function NewList({ navigation, setaBook, setChapter, fetchCurrent, fetchSaveMove
             maxToRenderPerBatch={10}
             numColumns={2}
             columnWrapperStyle={{flex: 1, justifyContent: 'space-around'}}
-          />
+          />}
         </React.Fragment> : <ScrollView>
             <Title style={{ textAlign: 'center', marginTop: 10 }}>{i18n.t('verse')}</Title>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap', padding: 10 }}>

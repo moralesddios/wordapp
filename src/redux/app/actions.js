@@ -4,7 +4,7 @@ import {
   SET_VERSION,
   SET_THEME,
   SET_FONT_SIZE,
-  SET_MODAL_VISIBLE
+  SET_AVATAR_URL
 } from '../../constants/action-types'
 
 export function setBook(payload) {
@@ -27,6 +27,6 @@ export function setFontSize(payload) {
   return { type: SET_FONT_SIZE, payload }
 }
 
-export function setModalVisible(payload) {
-  return { type: SET_MODAL_VISIBLE, payload }
+export function setAvatarUrl(payload) {
+  return { type: SET_AVATAR_URL, payload }
 }

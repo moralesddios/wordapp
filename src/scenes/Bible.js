@@ -2,7 +2,8 @@ import React, { useRef, useCallback, useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import { View, SafeAreaView, FlatList, StyleSheet } from 'react-native'
-import { Surface, Button } from 'react-native-paper'
+import { Surface, Button, useTheme } from 'react-native-paper'
+import { UIActivityIndicator } from 'react-native-indicators'
 
 import * as Actions from '../redux/actions'
 import { Verse } from '../components'
@@ -11,7 +12,8 @@ function Bible({ setChapter, fetchCurrent, fetchVerseList, fetchSaveMove }) {
   const listRef = useRef()
   const { book, chapter, version } = useSelector(state => state.app)
   const { total } = useSelector(state => state.current)
-  const { data } = useSelector(state => state.verse)
+  const { loading, data } = useSelector(state => state.verse)
+  const { colors } = useTheme()
 
   const renderVerse = useCallback(({ item }) => <Verse item={item} />, [])
   const keyExtractor = useCallback(item => item.verse.toString(), [])
@@ -42,6 +44,7 @@ function Bible({ setChapter, fetchCurrent, fetchVerseList, fetchSaveMove }) {
   return (
     <Surface style={styles.container}>
       <SafeAreaView style={styles.list}>
+      {loading ? <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}><UIActivityIndicator color={colors.primary} /></View> :
         <FlatList
           ref={listRef}
           data={data}
@@ -50,7 +53,7 @@ function Bible({ setChapter, fetchCurrent, fetchVerseList, fetchSaveMove }) {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           style={{ marginHorizontal: 15 }}
-        />
+        />}
       </SafeAreaView>
       <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6 }}>
         <Button icon="ios-arrow-back" onPress={handlePrev} disabled={chapter === 1} />

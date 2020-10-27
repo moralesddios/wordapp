@@ -97,12 +97,14 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
         visible={visible}
         onDismiss={closeMenu}
         anchor={
-          <TouchableOpacity onPress={openMenu} style={{ padding: 2, flexDirection: 'row' }}>
+          <TouchableOpacity onPress={openMenu} style={{ flexDirection: 'row' }}>
             {item.verse === 1 && <View style={{paddingRight: 10, height: 60}}><Text style={{color: colors.accent, fontSize: 42}}>{chapter}</Text></View>}
-            <Text style={{ color: textColor, backgroundColor: markColor, fontSize: fontSize, textAlign: 'justify', flexShrink: 1 }}>
-              <Text style={{ color: colors.primary, fontSize: fontSize + 2, fontWeight: 'bold' }}>{`${item.verse} `}</Text>
-              {item.text.replace(regex, '').replace(regex2, '')}
-            </Text>
+            <View style={{width: '100%', flexShrink: 1, backgroundColor: markColor, borderRadius: 8, padding: 2}}>
+              <Text style={{ color: textColor, fontSize: fontSize, textAlign: 'justify' }}>
+                <Text style={{ color: colors.primary, fontSize: fontSize + 2, fontWeight: 'bold' }}>{`${item.verse} `}</Text>
+                {item.text.replace(regex, '').replace(regex2, '')}
+              </Text>
+            </View>
           </TouchableOpacity>
         }>
         <Menu.Item onPress={() => speechText()} title={i18n.t('listen')} icon="ios-play" />
