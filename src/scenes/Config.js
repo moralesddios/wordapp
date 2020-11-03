@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
-import { Surface, Subheading, Text, Button, RadioButton } from 'react-native-paper'
+import { View, Image, TouchableOpacity, Alert, StyleSheet } from 'react-native'
+import { Surface, Subheading, Text, Button, RadioButton, useTheme } from 'react-native-paper'
 import { LinearGradient } from 'expo-linear-gradient'
+import * as ImagePicker from 'expo-image-picker'
+import * as FileSystem from 'expo-file-system'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import i18n from 'i18n-js'
@@ -20,9 +22,12 @@ const formSchema = Yup.object().shape({
     .required('Este campo es requerido.'),
 })
 
-function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme, setFontSize, fetchVerseList, fetchCurrent }) {
-  const { book, chapter } = useSelector(state => state.app)
+function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme, setFontSize, setAvatarUrl, fetchVerseList, fetchCurrent }) {
+  const { avatar, book, chapter } = useSelector(state => state.app)
   const { loading } = useSelector(state => state.config.save)
+  const { colors } = useTheme()
+  const [avatarURL, setAvatarURL] = useState(avatar)
+  const [dirty, setDirty] = useState(false)
   const [initial, setInitial] = useState({
     version: 'verses',
     theme: 'automatic',
@@ -34,7 +39,8 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
   }, [])
 
   const saved = values => {
-    const { version, theme, fontsize } = values
+    const { avatar, version, theme, fontsize } = values
+    setAvatarUrl(avatar)
     setVersion(version)
     setTheme(theme)
     setFontSize(fontsize)
@@ -47,8 +53,56 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
     setFieldValue('fontsize', value)
   }
 
-  const submit = values => {
-    fetchSaveConfig([values.version, values.theme, values.fontsize], saved)
+  const submit = async values => {
+    if (dirty){
+      let photoURL = null
+      if(avatarURL){
+        const uid = Date.now().toString(36) + Math.random().toString(36).substring(2)
+        photoURL = `${FileSystem.documentDirectory}wordapp/${uid}`
+        await FileSystem.copyAsync({from: avatarURL, to: photoURL})
+      }
+      fetchSaveConfig([photoURL, values.version, values.theme, values.fontsize], saved)
+    } else {
+      fetchSaveConfig([avatarURL, values.version, values.theme, values.fontsize], saved)
+    }
+  }
+
+  const chooseImage = async() => {
+    const { status } = await ImagePicker.requestCameraRollPermissionsAsync()
+    if (status !== 'granted') {
+      Alert.alert(
+        "Error",
+        "Sorry, we need camera roll permissions to make this work!",
+      )
+    } else {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [3, 3],
+        quality: 1,
+      })
+
+      if(!result.cancelled){
+        setDirty(true)
+        setAvatarURL(result.uri)
+      }
+    }
+  }
+
+  const dropImage = () => {
+    Alert.alert(
+      'Foto de perfil',
+      `¿Seguro de eliminar su foto de perfil?`,
+      [{
+          text: 'Cancelar'
+      },{
+          text: 'Aceptar',
+          onPress: () => {
+            setDirty(true)
+            setAvatarURL(null)
+          }
+      }]
+    )
   }
 
   return (
@@ -60,6 +114,18 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
         onSubmit={submit}>
         {({ handleChange, handleSubmit, setFieldValue, errors, touched, values }) => (
           <React.Fragment>
+            <Subheading>{i18n.t('photo')}</Subheading>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity onPress={chooseImage}>
+                  <Image
+                    source={avatarURL ? {uri:avatarURL} : require('../../assets/avatar.png')}
+                    style={{height: 80, width: 80, backgroundColor: colors.primary, borderRadius: 40}}
+                  />
+                </TouchableOpacity>
+                {avatarURL && <View style={{ marginLeft: 10, alignSelf: 'flex-start' }}>
+                  <Button mode="text" onPress={dropImage}>Eliminar</Button>
+                </View>}
+              </View>
             <Subheading>{i18n.t('version')}</Subheading>
             <RadioButton.Group name="version" onValueChange={handleChange('version')} value={values.version}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -126,6 +192,7 @@ const mapDispatchToProps = dispatch => {
     setVersion: Actions.setVersion,
     setFontSize: Actions.setFontSize,
     setTheme: Actions.setTheme,
+    setAvatarUrl: Actions.setAvatarUrl,
     fetchVerseList: Actions.fetchVerseList,
     fetchCurrent: Actions.fetchCurrent,
   }, dispatch);

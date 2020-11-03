@@ -46,9 +46,8 @@ class Index extends Component {
         url, `${FileSystem.documentDirectory}SQLite/bilbe.db`, {}, callback
       )
       await downloadResumable.downloadAsync()
-      await createSql('create table if not exists config (id integer primary key not null, book_number smallint, chapter smallint, version varchar(10), fontsize tinyint, theme varchar(12));')
+      await createSql('create table if not exists config (id integer primary key not null, book_number smallint, chapter smallint, version varchar(10), fontsize tinyint, theme varchar(12), avatar text);')
       await createSql('create table if not exists marks (id integer primary key not null, book_number smallint, chapter smallint, verse smallint, color varchar(10));')
-      
       this.setState({ loaded: true, msg: 'INICIANDO' })
     }
   }

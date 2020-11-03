@@ -3,7 +3,6 @@ import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import { Appbar, Avatar } from 'react-native-paper'
 import { StatusBar } from 'expo-status-bar'
-import * as FileSystem from 'expo-file-system'
 import * as Speech from 'expo-speech'
 import i18n from 'i18n-js'
 
@@ -75,7 +74,7 @@ function Header({ scene, previous, navigation, setModalVisible }) {
         }
         <Avatar.Image
           size={40}
-          source={avatar ? {uri:`${FileSystem.documentDirectory}wordapp/avatar`} : require('../../assets/avatar.png')}
+          source={avatar ? {uri:avatar} : require('../../assets/avatar.png')}
           style={{marginLeft: previous ? 0 : 14}}
         />
         <Appbar.Content title={getTitle()} subtitle={getSubtitle()} />

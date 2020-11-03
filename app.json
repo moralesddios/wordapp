@@ -9,11 +9,12 @@
       "android",
       "web"
     ],
-    "version": "1.4.5",
+    "version": "1.5.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
+      "tableImage": "./assets/tablet.png",
       "resizeMode": "contain",
       "backgroundColor": "#1c7ce0"
     },
@@ -25,12 +26,12 @@
     ],
     "ios": {
       "bundleIdentifier": "moralesddios.bible",
-      "buildNumber": "1.4.5",
+      "buildNumber": "1.5.2",
       "supportsTablet": true
     },
     "android": {
       "package": "moralesddios.bible",
-      "versionCode": 145,
+      "versionCode": 152,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1c7ce0"

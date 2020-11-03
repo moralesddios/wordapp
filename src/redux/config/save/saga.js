@@ -8,9 +8,9 @@ const saveAsync = async params => {
   try {
     const r = await executeSql('SELECT * from config WHERE id = 1;')
     if(r.length > 0){
-      const response = await createSql('UPDATE config SET version=?, theme=?, fontsize=? WHERE id = 1;', params)
+      const response = await createSql('UPDATE config SET avatar=?, version=?, theme=?, fontsize=? WHERE id = 1;', params)
     } else {
-      const response = await createSql('INSERT INTO config (version, theme, fontsize) VALUES (?, ?, ?);', params)
+      const response = await createSql('INSERT INTO config (avatar, version, theme, fontsize) VALUES (?, ?, ?, ?);', params)
     }
     return { success: true }
   } catch (e) {
@@ -22,7 +22,7 @@ function* fetchSaveConfig({ payload, saved }) {
   const { success } = yield call(saveAsync, payload)
   if (success) {
     yield put(successSaveConfig())
-    saved({ version: payload[0], theme: payload[1], fontsize: payload[2] })
+    saved({ avatar: payload[0], version: payload[1], theme: payload[2], fontsize: payload[3] })
   } else {
     yield put(errorSaveConfig({error: 'error'}))
   }

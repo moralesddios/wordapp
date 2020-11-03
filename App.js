@@ -44,7 +44,7 @@ export default function App() {
       try {
         await createSql('alter table config add avatar text;')
       } catch (e) {
-        console.log(e)
+        // console.log(e)
       }
       try {
         const resp = await executeSql('SELECT * FROM config where id = 1;')
