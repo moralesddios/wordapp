@@ -2,7 +2,7 @@ import React from 'react'
 import { useColorScheme } from 'react-native-appearance'
 import { DefaultTheme, DarkTheme, Provider as PaperProvider } from 'react-native-paper'
 import { useSelector } from 'react-redux'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 import { Main } from './navigation'
 
@@ -61,7 +61,7 @@ export default function Paper() {
   }
 
   return (
-    <PaperProvider settings={{ icon: props => <Ionicons {...props} /> }} theme={tm}>
+    <PaperProvider settings={{ icon: props => <FontAwesome5 {...props} /> }} theme={tm}>
       <Main />
     </PaperProvider>
   )

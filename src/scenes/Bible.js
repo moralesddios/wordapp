@@ -56,8 +56,8 @@ function Bible({ setChapter, fetchCurrent, fetchVerseList, fetchSaveMove }) {
         />}
       </SafeAreaView>
       <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6 }}>
-        <Button icon="ios-arrow-back" onPress={handlePrev} disabled={chapter === 1} />
-        <Button icon="ios-arrow-forward" onPress={handleNext} disabled={chapter === total} />
+        <Button icon="chevron-left" onPress={handlePrev} disabled={chapter === 1} />
+        <Button icon="chevron-right" onPress={handleNext} disabled={chapter === total} />
       </View>
     </Surface>
   )

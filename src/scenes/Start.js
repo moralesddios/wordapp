@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
-import { View, TouchableOpacity, ImageBackground, StyleSheet } from 'react-native'
-import { Surface, Title, Subheading } from 'react-native-paper'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Surface, Text, useTheme } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import i18n from 'i18n-js'
 
 import * as Actions from '../redux/actions'
@@ -11,6 +12,8 @@ function Start({ navigation, fetchCurrent }) {
   const { book } = useSelector(state => state.app)
   const { bookname } = useSelector(state => state.current)
   const { chapter } = useSelector(state => state.app)
+
+  const { colors } = useTheme()
 
   useEffect(() => {
     fetchCurrent([book])
@@ -30,30 +33,30 @@ function Start({ navigation, fetchCurrent }) {
     },
     item: {
       flex: 1,
+      margin: 10,
+      borderWidth: 0.2,
+      borderColor: '#ccc',
+      borderStyle: 'solid',
+      borderRadius: 10,
     },
     inside: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#FFFFFF00'
+      paddingTop: 10
     },
     title: {
-      color: '#FFF',
+      marginTop: 6,
       textAlign: 'center',
-      fontSize: 32,
-      textShadowColor: '#000',
-      textShadowOffset: { width: 0.8, height: 0.8 },
-      textShadowRadius: 4,
+      color: '#888',
+      fontSize: 18
     },
     quote: {
       position: 'absolute',
-      top: 10,
+      color: '#888',
+      top: 4,
       right: 10,
-      color: '#FFF',
-      fontSize: 16,
-      textShadowColor: '#000',
-      textShadowOffset: { width: 0.8, height: 0.8 },
-      textShadowRadius: 4,
+      fontSize: 16
     }
   })
 
@@ -61,51 +64,45 @@ function Start({ navigation, fetchCurrent }) {
     <Surface style={styles.container}>
       <View style={styles.row}>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('bible')}>
-          <ImageBackground source={require('../../assets/one.jpg')} style={styles.image}>
-            <View style={styles.inside}>
-              <Subheading style={styles.quote}>{bookname}:{chapter}</Subheading>
-              <Title style={styles.title}>{i18n.t('resume')}</Title>
-            </View>
-          </ImageBackground>
+          <View style={styles.inside}>
+            <Icon name="bible" size={90} color="#888" />
+            <Text style={styles.quote}>{bookname}: {chapter}</Text>
+            <Text style={styles.title}>{i18n.t('resume').replace(' ', '\n')}</Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('search')}>
-          <ImageBackground source={require('../../assets/two.jpg')} style={styles.image}>
-            <View style={styles.inside}>
-              <Title style={styles.title}>{i18n.t('search')}</Title>
-            </View>
-          </ImageBackground>
+          <View style={styles.inside}>
+            <Icon name="search" size={90} color="#888" />
+            <Text style={styles.title}>{i18n.t('search').replace(' ', '\n')}</Text>
+          </View>
         </TouchableOpacity>
       </View>
       <View style={styles.row}>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('old')}>
-          <ImageBackground source={require('../../assets/tree.jpg')} style={styles.image}>
-            <View style={styles.inside}>
-              <Title style={styles.title}>{i18n.t('old')}</Title>
-            </View>
-          </ImageBackground>
+          <View style={styles.inside}>
+            <Icon name="mountain" size={90} color="#888" />
+            <Text style={styles.title}>{i18n.t('old').replace(' ', '\n')}</Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('new')}>
-          <ImageBackground source={require('../../assets/four.jpg')} style={styles.image}>
-            <View style={styles.inside}>
-              <Title style={styles.title}>{i18n.t('new')}</Title>
-            </View>
-          </ImageBackground>
+          <View style={styles.inside}>
+            <Icon name="cross" size={90} color="#888" />
+            <Text style={styles.title}>{i18n.t('new').replace(' ', '\n')}</Text>
+          </View>
         </TouchableOpacity>
       </View>
       <View style={styles.row}>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('bookmarks')}>
-          <ImageBackground source={require('../../assets/five.jpg')} style={styles.image}>
-            <View style={styles.inside}>
-              <Title style={styles.title}>{i18n.t('bookmarks')}</Title>
-            </View>
-          </ImageBackground>
+          <View style={styles.inside}>
+            <Icon name="bookmark" size={90} color="#888" />
+            <Text style={styles.title}>{i18n.t('bookmarks').replace(' ', '\n')}</Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('config')}>
-          <ImageBackground source={require('../../assets/six.jpg')} style={styles.image}>
-            <View style={styles.inside}>
-              <Title style={styles.title}>{i18n.t('settings')}</Title>
-            </View>
-          </ImageBackground>
+          <View style={styles.inside}>
+            <Icon name="cog" size={90} color="#888" />
+            <Text style={styles.title}>{i18n.t('settings').replace(' ', '\n')}</Text>
+          </View>
         </TouchableOpacity>
       </View>
     </Surface>

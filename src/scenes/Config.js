@@ -115,17 +115,17 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
         {({ handleChange, handleSubmit, setFieldValue, errors, touched, values }) => (
           <React.Fragment>
             <Subheading>{i18n.t('photo')}</Subheading>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <TouchableOpacity onPress={chooseImage}>
-                  <Image
-                    source={avatarURL ? {uri:avatarURL} : require('../../assets/avatar.png')}
-                    style={{height: 80, width: 80, backgroundColor: colors.primary, borderRadius: 40}}
-                  />
-                </TouchableOpacity>
-                {avatarURL && <View style={{ marginLeft: 10, alignSelf: 'flex-start' }}>
-                  <Button mode="text" onPress={dropImage}>Eliminar</Button>
-                </View>}
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <TouchableOpacity onPress={chooseImage}>
+                <Image
+                  source={avatarURL ? {uri:avatarURL} : require('../../assets/avatar.png')}
+                  style={{height: 80, width: 80, backgroundColor: colors.primary, borderRadius: 40}}
+                />
+              </TouchableOpacity>
+              <View style={{ marginLeft: 10, alignSelf: 'flex-start' }}>
+                <Button mode="text" onPress={dropImage} disabled={!avatarURL}>{i18n.t('remove')}</Button>
               </View>
+            </View>
             <Subheading>{i18n.t('version')}</Subheading>
             <RadioButton.Group name="version" onValueChange={handleChange('version')} value={values.version}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -167,7 +167,7 @@ function Config({ navigation, fetchConfig, fetchSaveConfig, setVersion, setTheme
               value={values.fontsize}
             />
             <View style={{alignItems: 'flex-end'}}>
-              <Button icon="ios-save" mode="contained" loading={loading} disabled={loading} onPress={handleSubmit} style={{ marginTop: 10 }}>
+              <Button icon="save" mode="contained" loading={loading} disabled={loading} onPress={handleSubmit} style={{ marginTop: 10 }}>
                 {i18n.t('save')}
               </Button>
             </View>

@@ -107,9 +107,9 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
             </View>
           </TouchableOpacity>
         }>
-        <Menu.Item onPress={() => speechText()} title={i18n.t('listen')} icon="ios-play" />
-        {marked && <Menu.Item onPress={() => unmark()} title={i18n.t('unmark')} icon="ios-bookmark" />}
-        {!marked && <Menu.Item onPress={() => mark()} title={i18n.t('mark')} icon="ios-bookmark" />}
+        <Menu.Item onPress={() => speechText()} title={i18n.t('listen')} icon="volume-up" />
+        {marked && <Menu.Item onPress={() => unmark()} title={i18n.t('unmark')} icon="bookmark" />}
+        {!marked && <Menu.Item onPress={() => mark()} title={i18n.t('mark')} icon="bookmark" />}
       </Menu>
     </React.Fragment>
   )

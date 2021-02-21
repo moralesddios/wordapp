@@ -78,9 +78,8 @@ function Header({ scene, previous, navigation, setModalVisible }) {
           style={{marginLeft: previous ? 0 : 14}}
         />
         <Appbar.Content title={getTitle()} subtitle={getSubtitle()} />
-        {inProgress && name === 'bible' && <Appbar.Action icon="ios-square" onPress={() => _stop()} />}
-        {!inProgress && name === 'bible' && <Appbar.Action icon="ios-play" onPress={() => _play()} />}
-        {name === 'bible' && <Appbar.Action icon="ios-search" onPress={() => navigation.replace('search')} />}
+        {inProgress && name === 'bible' && <Appbar.Action icon="stop-circle" onPress={() => _stop()} />}
+        {!inProgress && name === 'bible' && <Appbar.Action icon="play-circle" onPress={() => _play()} />}
       </Appbar.Header>
     </React.Fragment>
   )
