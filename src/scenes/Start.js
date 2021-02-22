@@ -13,11 +13,13 @@ function Start({ navigation, fetchCurrent }) {
   const { bookname } = useSelector(state => state.current)
   const { chapter } = useSelector(state => state.app)
 
-  const { colors } = useTheme()
+  const { dark, colors } = useTheme()
 
   useEffect(() => {
     fetchCurrent([book])
   }, [])
+
+  const color_icon = dark ? '#ccc' : colors.primary 
 
   const styles = StyleSheet.create({
     container: {
@@ -35,7 +37,7 @@ function Start({ navigation, fetchCurrent }) {
       flex: 1,
       margin: 10,
       borderWidth: 0.2,
-      borderColor: '#ccc',
+      borderColor: '#888',
       borderStyle: 'solid',
       borderRadius: 10,
     },
@@ -65,14 +67,14 @@ function Start({ navigation, fetchCurrent }) {
       <View style={styles.row}>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('bible')}>
           <View style={styles.inside}>
-            <Icon name="bible" size={90} color="#888" />
+            <Icon name="bible" size={90} color={color_icon} />
             <Text style={styles.quote}>{bookname}: {chapter}</Text>
             <Text style={styles.title}>{i18n.t('resume').replace(' ', '\n')}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('search')}>
           <View style={styles.inside}>
-            <Icon name="search" size={90} color="#888" />
+            <Icon name="search" size={90} color={color_icon} />
             <Text style={styles.title}>{i18n.t('search').replace(' ', '\n')}</Text>
           </View>
         </TouchableOpacity>
@@ -80,13 +82,13 @@ function Start({ navigation, fetchCurrent }) {
       <View style={styles.row}>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('old')}>
           <View style={styles.inside}>
-            <Icon name="mountain" size={90} color="#888" />
+            <Icon name="mountain" size={90} color={color_icon} />
             <Text style={styles.title}>{i18n.t('old').replace(' ', '\n')}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('new')}>
           <View style={styles.inside}>
-            <Icon name="cross" size={90} color="#888" />
+            <Icon name="cross" size={90} color={color_icon} />
             <Text style={styles.title}>{i18n.t('new').replace(' ', '\n')}</Text>
           </View>
         </TouchableOpacity>
@@ -94,13 +96,13 @@ function Start({ navigation, fetchCurrent }) {
       <View style={styles.row}>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('bookmarks')}>
           <View style={styles.inside}>
-            <Icon name="bookmark" size={90} color="#888" />
+            <Icon name="bookmark" size={90} color={color_icon} />
             <Text style={styles.title}>{i18n.t('bookmarks').replace(' ', '\n')}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('config')}>
           <View style={styles.inside}>
-            <Icon name="cog" size={90} color="#888" />
+            <Icon name="cog" size={90} color={color_icon} />
             <Text style={styles.title}>{i18n.t('settings').replace(' ', '\n')}</Text>
           </View>
         </TouchableOpacity>
