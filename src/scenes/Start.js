@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { Surface, Text, useTheme } from 'react-native-paper'
+import { View, TouchableNativeFeedback, StyleSheet } from 'react-native'
+import { Surface, Text, Caption, useTheme } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import i18n from 'i18n-js'
 
@@ -23,7 +23,8 @@ function Start({ navigation, fetchCurrent }) {
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
+      paddingVertical: 10
     },
     row: {
       flex: 1,
@@ -56,57 +57,73 @@ function Start({ navigation, fetchCurrent }) {
     quote: {
       position: 'absolute',
       color: '#888',
-      top: 4,
+      top: 10,
       right: 10,
       fontSize: 16
+    },
+    version: {
+      textAlign: 'center'
     }
   })
 
   return (
     <Surface style={styles.container}>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('bible')}>
-          <View style={styles.inside}>
-            <Icon name="bible" size={90} color={color_icon} />
-            <Text style={styles.quote}>{bookname}: {chapter}</Text>
-            <Text style={styles.title}>{i18n.t('resume').replace(' ', '\n')}</Text>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('bible')}>
+          <View style={styles.item}>
+            <View style={styles.inside}>
+              <Icon name="bible" size={90} color={color_icon} />
+              <Text style={styles.quote}>{bookname}: {chapter}</Text>
+              <Text style={styles.title}>{i18n.t('resume').replace(' ', '\n')}</Text>
+            </View>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('search')}>
-          <View style={styles.inside}>
-            <Icon name="search" size={90} color={color_icon} />
-            <Text style={styles.title}>{i18n.t('search').replace(' ', '\n')}</Text>
+        </TouchableNativeFeedback>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('search')}>
+          <View style={styles.item}>
+            <View style={styles.inside}>
+              <Icon name="search" size={90} color={color_icon} />
+              <Text style={styles.title}>{i18n.t('search').replace(' ', '\n')}</Text>
+            </View>
           </View>
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
       </View>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('old')}>
-          <View style={styles.inside}>
-            <Icon name="mountain" size={90} color={color_icon} />
-            <Text style={styles.title}>{i18n.t('old').replace(' ', '\n')}</Text>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('old')}>
+          <View style={styles.item}>
+            <View style={styles.inside}>
+              <Icon name="mountain" size={90} color={color_icon} />
+              <Text style={styles.title}>{i18n.t('old').replace(' ', '\n')}</Text>
+            </View>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('new')}>
-          <View style={styles.inside}>
-            <Icon name="cross" size={90} color={color_icon} />
-            <Text style={styles.title}>{i18n.t('new').replace(' ', '\n')}</Text>
+        </TouchableNativeFeedback>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('new')}>
+          <View style={styles.item}>
+            <View style={styles.inside}>
+              <Icon name="cross" size={90} color={color_icon} />
+              <Text style={styles.title}>{i18n.t('new').replace(' ', '\n')}</Text>
+            </View>
           </View>
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
       </View>
       <View style={styles.row}>
-        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('bookmarks')}>
-          <View style={styles.inside}>
-            <Icon name="bookmark" size={90} color={color_icon} />
-            <Text style={styles.title}>{i18n.t('bookmarks').replace(' ', '\n')}</Text>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('bookmarks')}>
+          <View style={styles.item}>
+            <View style={styles.inside}>
+              <Icon name="bookmark" size={90} color={color_icon} />
+              <Text style={styles.title}>{i18n.t('bookmarks').replace(' ', '\n')}</Text>
+            </View>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('config')}>
-          <View style={styles.inside}>
-            <Icon name="cog" size={90} color={color_icon} />
-            <Text style={styles.title}>{i18n.t('settings').replace(' ', '\n')}</Text>
+        </TouchableNativeFeedback>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('config')}>
+          <View style={styles.item}>
+            <View style={styles.inside}>
+              <Icon name="cog" size={90} color={color_icon} />
+              <Text style={styles.title}>{i18n.t('settings').replace(' ', '\n')}</Text>
+            </View>
           </View>
-        </TouchableOpacity>
+        </TouchableNativeFeedback>
       </View>
+      <Caption style={styles.version}>{i18n.t('version')} 1.0.0</Caption>
     </Surface>
   )
 }

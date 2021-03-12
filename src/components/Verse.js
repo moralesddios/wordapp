@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
 import { Menu, useTheme } from 'react-native-paper'
-import { TouchableOpacity, View, Text } from 'react-native'
+import { TouchableNativeFeedback, View, Text } from 'react-native'
 import * as Speech from 'expo-speech'
 import i18n from 'i18n-js'
 
@@ -97,15 +97,17 @@ function Verse({ item, fetchSaveMark, fetchRemoveMark }) {
         visible={visible}
         onDismiss={closeMenu}
         anchor={
-          <TouchableOpacity onPress={openMenu} style={{ flexDirection: 'row' }}>
-            {item.verse === 1 && <View style={{paddingRight: 10, height: 60}}><Text style={{color: colors.accent, fontSize: 42}}>{chapter}</Text></View>}
-            <View style={{width: '100%', flexShrink: 1, backgroundColor: markColor, borderRadius: 8, padding: 2}}>
-              <Text style={{ color: textColor, fontSize: fontSize, textAlign: 'justify' }}>
-                <Text style={{ color: colors.primary, fontSize: fontSize + 2, fontWeight: 'bold' }}>{`${item.verse} `}</Text>
-                {item.text.replace(regex, '').replace(regex2, '')}
-              </Text>
+          <TouchableNativeFeedback onPress={openMenu}>
+            <View style={{ flexDirection: 'row' }}>
+              {item.verse === 1 && <View style={{paddingRight: 10}}><Text style={{color: colors.accent, fontSize: 42}}>{chapter}</Text></View>}
+              <View style={{width: '100%', flexShrink: 1, backgroundColor: markColor, borderRadius: 8, padding: 2}}>
+                <Text style={{ color: textColor, fontSize: fontSize, textAlign: 'justify' }}>
+                  <Text style={{ color: colors.primary, fontSize: fontSize + 2, fontWeight: 'bold' }}>{`${item.verse} `}</Text>
+                  {item.text.replace(regex, '').replace(regex2, '')}
+                </Text>
+              </View>
             </View>
-          </TouchableOpacity>
+          </TouchableNativeFeedback>
         }>
         <Menu.Item onPress={() => speechText()} title={i18n.t('listen')} icon="volume-up" />
         {marked && <Menu.Item onPress={() => unmark()} title={i18n.t('unmark')} icon="bookmark" />}

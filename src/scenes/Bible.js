@@ -1,9 +1,10 @@
 import React, { useRef, useCallback, useEffect } from 'react'
 import { compose, bindActionCreators } from 'redux'
 import { connect, useSelector } from 'react-redux'
-import { View, SafeAreaView, FlatList, StyleSheet } from 'react-native'
+import { View, SafeAreaView, FlatList, TouchableNativeFeedback, StyleSheet } from 'react-native'
 import { Surface, Button, useTheme } from 'react-native-paper'
 import { UIActivityIndicator } from 'react-native-indicators'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import * as Actions from '../redux/actions'
 import { Verse } from '../components'
@@ -55,9 +56,17 @@ function Bible({ setChapter, fetchCurrent, fetchVerseList, fetchSaveMove }) {
           style={{ marginHorizontal: 15 }}
         />}
       </SafeAreaView>
-      <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6 }}>
-        <Button icon="chevron-left" onPress={handlePrev} disabled={chapter === 1} />
-        <Button icon="chevron-right" onPress={handleNext} disabled={chapter === total} />
+      <View style={styles.toolbar}>
+        <TouchableNativeFeedback onPress={handlePrev} disabled={chapter === 1}>
+          <View style={styles.button}>
+            <Icon name="chevron-left" size={36} color={chapter === 1 ? colors.disabled : colors.primary} />
+          </View>
+        </TouchableNativeFeedback>
+        <TouchableNativeFeedback onPress={handleNext} disabled={chapter === total}>
+          <View style={styles.button}>
+            <Icon name="chevron-right" size={36} color={chapter === total ? colors.disabled : colors.primary} />
+          </View>
+        </TouchableNativeFeedback>
       </View>
     </Surface>
   )
@@ -73,6 +82,21 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     paddingTop: 10,
+  },
+  button: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  toolbar: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderColor: '#FFFFFF00',
+    paddingVertical: 6,
+    paddingHorizontal: 10
   }
 })
 

@@ -11,9 +11,9 @@ import * as Actions from '../redux/actions'
 const regex = /\[(?:.|\n)*?\]/gm
 const regex2 = /<(?:.|\n)*?>/gm
 
-function Header({ scene, previous, navigation, setModalVisible }) {
+function Header({ scene, previous, navigation, setVersion, fetchVerseList }) {
   const { bookname } = useSelector(state => state.current)
-  const { avatar, chapter } = useSelector(state => state.app)
+  const { avatar, book, chapter, version } = useSelector(state => state.app)
   const { data } = useSelector(state => state.verse)
   const [inProgress, setInProgress] = useState(false)
 
@@ -34,6 +34,13 @@ function Header({ scene, previous, navigation, setModalVisible }) {
       onStopped: complete,
       onError: complete,
     })
+  }
+
+  const _alter = () => {
+    console.log(version)
+    const nversion = version === 'verses' ? 'averses' : 'verses'
+    setVersion(nversion)
+    fetchVerseList(nversion, [book, chapter])
   }
 
   const _stop = () => {
@@ -78,8 +85,9 @@ function Header({ scene, previous, navigation, setModalVisible }) {
           style={{marginLeft: previous ? 0 : 14}}
         />
         <Appbar.Content title={getTitle()} subtitle={getSubtitle()} />
-        {inProgress && name === 'bible' && <Appbar.Action icon="stop-circle" onPress={() => _stop()} />}
-        {!inProgress && name === 'bible' && <Appbar.Action icon="play-circle" onPress={() => _play()} />}
+        {name === 'bible' && <Appbar.Action icon="random" onPress={_alter} />}
+        {inProgress && name === 'bible' && <Appbar.Action icon="stop-circle" onPress={_stop} />}
+        {!inProgress && name === 'bible' && <Appbar.Action icon="play-circle" onPress={_play} />}
       </Appbar.Header>
     </React.Fragment>
   )
@@ -87,7 +95,8 @@ function Header({ scene, previous, navigation, setModalVisible }) {
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators({
-    setModalVisible: Actions.setModalVisible,
+    setVersion: Actions.setVersion,
+    fetchVerseList: Actions.fetchVerseList,
   }, dispatch);
 }
 
